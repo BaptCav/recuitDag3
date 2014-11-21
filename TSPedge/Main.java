@@ -1,22 +1,22 @@
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.io.*
-;class Main{
+//import java.util.NoSuchElementException;
+//import java.util.Scanner;
+import java.io.*;
+
+class Main{
 	static int N =20;
 	public static Double X = 0.0;
 	public static Double Y = 0.0;
-	private static BufferedReader br;
-	private static Scanner scanner;
+
 	public static ArrayList<Double> coordX = new ArrayList<Double>();
 	public static ArrayList<Double> coordY = new ArrayList<Double>();
 	public static void main(String[] args) throws IOException{
-	int numero = 0;
-		int dimension = 0;
-		boolean upper = false;
-		System.out.println("lecture en cours");
-		try {
+
+
+	try {
+ 
+ /* 
 			File fichier = new File("C:/minlocalbis.txt");
 			Scanner scanner = new Scanner(fichier);
 			int k=1;
@@ -26,7 +26,11 @@ import java.io.*
 				{
 					numero = k;
 					k+=1;
-// Ici, deux tests sont possible : un sur des benchmarks ayant pour entrée les coordonnées des villes, l'autre sur des graphes définis par les matrices d'adjacence. 					
+					*/
+
+					
+					
+// Ici, deux tests sont possible : un sur des benchmarks ayant pour entrï¿½e les coordonnï¿½es des villes, l'autre sur des graphes dï¿½finis par les matrices d'adjacence. 					
 // A partir de maintenant, test pour gros graphes (Exemple brazil58) 
 					/*X = scanner.nextDouble();
 					Y = scanner.nextDouble();
@@ -48,10 +52,15 @@ import java.io.*
 					matrice[j-1][i-1] = matrice[i-1][j-1];
 				}
 			}	*/
-	//Fin test gros graphes	avec coordonnées			
-	// Début Test d'une matrice 5x5 (Exemple de Pierre-Alain ou celui de Pierre)				
+	//Fin test gros graphes	avec coordonnï¿½es			
+	// Dï¿½but Test d'une matrice 5x5 (Exemple de Pierre-Alain ou celui de Pierre)				
 					
-					X = scanner.nextDouble();
+		
+		
+		
+
+		
+				/*	X = scanner.nextDouble();
 					coordX.add(X);
 					System.out.println("Le coefficient numero "+numero+" de valeur "+X+" a ete charge");
 					}
@@ -67,9 +76,19 @@ import java.io.*
 						{
 							matrice[i-1][j-1] = coordX.get((5*(i-1))+(j-1));
 						}
-					}
+					}*/
 			//Fin test
-			Graphe g = new Graphe(matrice);
+
+					
+		
+		//CHANGER LE FICHIER, MARCHE SI LE FICHIER EST UNE MATRICE (exemple brazil58)
+			String fichier2 = "/Users/thomasdoutre/Desktop/ALLTSP/Matrices/INT[][]/UPPER_ROW/brazil58.tsp";
+			String fichier3 = "/Users/thomasdoutre/Desktop/ALLTSP/Coordonnees/INT/att48.tsp";
+			String fichier4 = "/Users/thomasdoutre/Desktop/ALLTSP/Coordonnees/DOUBLE/ch130.tsp";
+
+			Graphe g = new Graphe(LectureBenchmarks.donneMatrice(fichier4));
+			
+			
 			ArrayList<Integer> tab_min = new ArrayList<Integer>();
 			tab_min.add(0);
 			tab_min.add(1);

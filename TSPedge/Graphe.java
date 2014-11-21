@@ -1,6 +1,10 @@
 
 	public class Graphe {
 
+		
+		
+		// On considère dans un premier temps des matrices d'integers. On traitera les doubles plus tard..
+		
 		// Un graphe est défini par une matrice carrée représentant les distances entre chaque noeud
 		double[][] longueursAretes;
 		
