@@ -73,6 +73,8 @@ public class Recuit extends JFrame
 		}
 		printProba.close();
 		// Lorsque l'énergie cinétique n'est plus suffisante, on s'arrête et on affiche la solution trouvée
+		System.out.println("distance meilleure route = " + meilleureRoute.getDistance());
+		
 		return meilleureRoute;
 		
 

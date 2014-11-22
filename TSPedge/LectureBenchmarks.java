@@ -29,6 +29,12 @@ public class LectureBenchmarks {
 					3. définies par la sous matrice triangulaire basse (LOWER_DIAG_ROW) [Matrices symétriques]
 			@ les coordonnées entières ou doubles
 			
+			Note 2 : la lecture ne fonctionne pas pour les fichiers :
+				brg180.tsp
+				si175.tsp
+				si535.tsp
+				si1032.tsp
+			
 			*/
 			
 			
@@ -101,16 +107,19 @@ public class LectureBenchmarks {
 					System.out.println("dimension = " +dimension);
 				}
 				
-				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("LOWER_DIAG_ROW"))){
+				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("LOWER_DIAG_ROW")||thisLine.replace("EDGE_WEIGHT_FORMAT : ", "").startsWith("LOWER_DIAG_ROW"))){
 					lower = true;
+					System.out.println("Type : LOWER_DIAG_ROW");
 				}
 
-				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("FULL_MATRIX"))){
+				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("FULL_MATRIX")||thisLine.replace("EDGE_WEIGHT_FORMAT : ", "").startsWith("FULL_MATRIX"))){
 					fullMatrix = true;
+					System.out.println("Type : FULL_MATRIX");
 				}
 				
-				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("UPPER_ROW"))){
+				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("UPPER_ROW")||thisLine.replace("EDGE_WEIGHT_FORMAT : ", "").startsWith("UPPER_ROW"))){
 					upper = true;
+					System.out.println("Type : UPPER_ROW");
 				}
 
 			}
@@ -152,7 +161,7 @@ public class LectureBenchmarks {
 				double[][] mat = MatrixAddDouble(matrice,transposeMatrixDouble(matrice));
 				
 				// On affiche cette matrice (cf méthode printApproxMatrix plus bas)
-				printApproxMatrix(mat);
+				// printApproxMatrix(mat);
 				
 				// Une fois qu'on obtient la matrice, on ferme le scanner et on retourne cette matrice
 				scanner.close();
@@ -172,7 +181,7 @@ public class LectureBenchmarks {
 				}
 
 
-				printApproxMatrix(matrice);
+				// printApproxMatrix(matrice);
 				
 				scanner.close();
 				return matrice;
@@ -195,7 +204,7 @@ public class LectureBenchmarks {
 
 				double[][] mat = MatrixAddDouble(matrice,transposeMatrixDouble(matrice));
 				
-				printApproxMatrix(mat);
+				// printApproxMatrix(mat);
 				
 				scanner.close();
 				return mat;	
@@ -209,6 +218,8 @@ public class LectureBenchmarks {
 			
 			
 			else {
+				
+				System.out.println("Type : COORDONNEES");
 				
 				double[][] matriceDesCoordonnees = new double[dimension][3];
 				
