@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-// Cette classe dÃ©finit le problÃ¨me du recuit. Il se charge d'effectuer les mutations Ã©lÃ©mentaires, de calculer l'Ã©nergie et de diminuer T...
+// Cette classe définit le problème du recuit. Il se charge d'effectuer les mutations Ã©lÃ©mentaires, de calculer l'Ã©nergie et de diminuer T...
 
 public class Recuit extends JFrame
 {
@@ -19,7 +19,7 @@ public class Recuit extends JFrame
 	public void setK(double K){
 		this.K=K;
 	}
-	// ProbabilitÃ© d'accepter une solution pire que l'actuelle
+	// Probabilité d'accepter une solution pire que l'actuelle
 	public static double probaAcceptation(double energieCourante, double energieNouvelle, double temperature, PrintWriter sortie) throws IOException 
 	{
 		// Si la nouvelle solution est meilleure, alors on accepte !
@@ -27,7 +27,7 @@ public class Recuit extends JFrame
 			saveProba(1,sortie);
 			return 1.0;
 		}
-		// si elle est pire, on dÃ©finit une proba pour accepter Ã©ventuellement cette solution...
+		// si elle est pire, on définit une proba pour accepter éventuellement cette solution...
 		saveProba((double)Math.round((Math.exp((energieCourante - energieNouvelle) / (K*temperature))) * 10000) / 10000,sortie);
 		return Math.exp((energieCourante - energieNouvelle) / (K*temperature));
 	}
