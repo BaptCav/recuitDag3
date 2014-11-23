@@ -16,9 +16,6 @@ public class Recuit extends JFrame
 	static int nbTours = 1;
 	public static ArrayList<Double> DeltaE = new ArrayList<Double>();
 
-	public void setK(double K){
-		this.K=K;
-	}
 	// Probabilité d'accepter une solution pire que l'actuelle
 	public static double probaAcceptation(double energieCourante, double energieNouvelle, double temperature, PrintWriter sortie) throws IOException 
 	{
@@ -50,7 +47,7 @@ public class Recuit extends JFrame
 			// On crée une nouvelle route conçue à partir de l'ancienne
 			nvelleSolution.clone(solutionCourante);
 			// Sur cette nouvelle route, on effectue une mutation élémentaire (2optMove)
-			nvelleSolution.twoOptMove();
+			Mutation.twoOptMove(nvelleSolution);
 			nbit++;
 			
 			// On récupère l'énergie (distance de parcours) des deux routes
