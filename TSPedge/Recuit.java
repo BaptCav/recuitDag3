@@ -12,17 +12,35 @@ public class Recuit extends JFrame
 	private static final long serialVersionUID = 2L;
 	static double temperature = 1000;
 	static double refroidissement = 0.0001;
-	static double K = 1;
+	static double K = 1; // 0.1 idéal ? Hypothèse : T0*K ~ nbre de points = idéal ?
 	static int nbTours = 1;
+	static int fenetre = 100; // de l'ordre de grandeur du nombre de villes
+	static boolean movingAverage = true;
 	public static ArrayList<Double> DeltaE = new ArrayList<Double>();
 
 	// Probabilité d'accepter une solution pire que l'actuelle
 	public static double probaAcceptation(double energieCourante, double energieNouvelle, double temperature, PrintWriter sortie) throws IOException 
 	{
+		DeltaE.add(Math.abs(energieCourante - energieNouvelle)); // On conserve les valeurs prises du delta énergétique
 		// Si la nouvelle solution est meilleure, alors on accepte !
 		if (energieNouvelle < energieCourante) {
 			saveProba(1,sortie);
 			return 1.0;
+		}
+		// le K peut être définie à l'aide d'une moyenne glissante.
+		// Constat : prendre la moyenne des deltaE n'a pas l'air idéal... D'où la division par fenetre^2 
+		if(movingAverage)
+		{
+			if(DeltaE.size() > fenetre)
+			{
+				double somme = 0;
+				for(int i = DeltaE.size(); i>DeltaE.size() - fenetre; i--)
+				{
+					somme = somme + DeltaE.get(i-1);
+				}
+				K = somme/(fenetre*fenetre);
+			}
+			//System.out.println(K);
 		}
 		// si elle est pire, on définit une proba pour accepter éventuellement cette solution...
 		saveProba((double)Math.round((Math.exp((energieCourante - energieNouvelle) / (K*temperature))) * 10000) / 10000,sortie);
