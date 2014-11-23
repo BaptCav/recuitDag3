@@ -23,7 +23,10 @@ public int[][] matmin(int N, Graphe g) {
 					else // Maintenant, si on a déjà rempli la première colonne
 					{
 						min = 99999;
-						
+						for(int j=0;j<n;j++)
+						{
+						if(j != M[i][compteur-1])
+						{
 						System.out.println("je suis rentre et compteur = "+compteur);
 						System.out.println("tableau["+i+"]["+j+"] = "+tableau[i][j]);
 						System.out.println("tableau[i][M[i][compteur-1]] = "+tableau[i][M[i][compteur-1]]);
@@ -33,7 +36,8 @@ public int[][] matmin(int N, Graphe g) {
 							min = tableau[i][j]; // alors c'est un candidat potentiel ! et on recommence jusqu'à j=n-1
 							M[i][compteur] = j; // et on stocke la valeur de l'index dans la matrice des indexs
 						}
-						
+						}
+						}
 					}
 			}
 		}
