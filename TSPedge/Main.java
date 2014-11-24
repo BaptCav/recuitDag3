@@ -31,7 +31,7 @@ class Main{
 					
 					
 // Ici, deux tests sont possible : un sur des benchmarks ayant pour entr�e les coordonn�es des villes, l'autre sur des graphes d�finis par les matrices d'adjacence. 					
-// A partir de maintenant, test pour gros graphes (Exemple brazil58) 
+// A partir de maintenant, test pour gros graphes (Exemple pr1002) 
 					/*X = scanner.nextDouble();
 					Y = scanner.nextDouble();
 					coordX.add(X);
