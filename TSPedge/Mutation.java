@@ -1,12 +1,14 @@
+import java.util.Collections;
+import java.util.ArrayList;
 
 public class Mutation {
 	
 	
 	// Mutations regroupées dans une classe pour plus de fluidité
 	//Echange deux élements d'une route. Les entrées sont les indices correspondants aux noeuds
-		
+		public Routage2 routage;
 	
-		public void swap(Routage2 routage,int i, int j){
+		public static void swap(Routage2 routage,int i, int j){
 			Collections.swap(routage.route,i,j);
 		}
 		//une fois les getters setters crÃ©es on attaque les opÃ©rations sur les routes
@@ -26,7 +28,7 @@ public class Mutation {
 		
 	
 	
-		public void twoOptMove(Routage2 routage) {
+		public static void twoOptMove(Routage2 routage) {
 			int n = routage.tailleRoute();
 			int randIndex1 = 0;//Indice du noeud c2
 			int randIndex2 = 0;//Indice du noeud c1'
@@ -103,7 +105,7 @@ public class Mutation {
 
 	//La mutation consiste à aller aléatoirement vers une autre route
 	public void totalRandom(Routage2 routage){
-		routage.route = routeInitiale();
+		routage.route = routage.routeInitiale();
 	}
 	//Mutation équivalente à la mutation PS3 de l'article "Mutation différentes pour TSP euclidien symétrique"
 		public void changePlace() {
@@ -117,7 +119,7 @@ public class Mutation {
 			int i = randIndex1;
 			while (i!=randIndex2){
 				routage.swap(i,randIndex2);
-				i=getNextIndex(i);
+				i=routage.getNextIndex(i);
 			}
 		}
 		
@@ -132,7 +134,7 @@ public class Mutation {
 				longueur = (int) ((n-1) * Math.random());
 				decalage = (int) (n * Math.random());
 			}
-			//Exemple avec la route : 0->1->2->3->4->5->6 (les entiers représentent les emplacements initiaux de chaque noeud dans la route)
+			//Exemple avec la route : 0->1->2->3->4->5->6 (les entiers representent les emplacements initiaux de chaque noeud dans la route)
 			//Ne pas oublier de voir la route comme un ensemble circulaire (il y a rebouclage du dernier élément sur le dernier)
 					//n=7
 					//debutSequence=5
@@ -143,40 +145,40 @@ public class Mutation {
 			int j = debutSequence;
 			int cpt = longueur-1;//on stocke dans cpt tous les compteurs de l'algorithme
 			while(cpt>0){
-				j=getNextIndex(j);
+				j=routage.getNextIndex(j);
 				cpt -=1;
 			}
 			int finSequence = j;
 			//Dans l'exemple, on a finSequence=1
-			//On rentre les éléments décalés situés après séquence. Dans l'exemple, on rentre 2->3
+			//On rentre les elements decales situes apres sequence. Dans l'exemple, on rentre 2->3
 			ArrayList<Integer> l = new ArrayList<Integer>();
 			cpt=decalage;
-			j=getNextIndex(j);
+			j=routage.getNextIndex(j);
 			while (cpt>0){
 				l.add(routage.getRoute().get(j));
-				j=getNextIndex(j);
+				j=routage.getNextIndex(j);
 				cpt -=1;
 			}
-			//On rentre les éléments de la séquence. Dans l'exemple, on obtient : 2->3->5->6->0->1
+			//On rentre les elements de la sequence. Dans l'exemple, on obtient : 2->3->5->6->0->1
 			int i =debutSequence;
-			while(i!=getNextIndex(finSequence)){
+			while(i!=routage.getNextIndex(finSequence)){
 				l.add(routage.getRoute().get(i));
-				i=getNextIndex(i);
+				i=routage.getNextIndex(i);
 			}
-			//On ajoute les éléments restants, ici 4
+			//On ajoute les elements restants, ici 4
 			while(j!=debutSequence){
 				l.add(routage.getRoute().get(j));
-				j=getNextIndex(j);
+				j=routage.getNextIndex(j);
 			}
 			routage.route = l;
 		}
-		//Mutation équivalente à la mutation PS6 de l'article "Mutation différentes pour TSP euclidien symétrique"
+		//Mutation equivalente sur la mutation PS6 de l'article "Mutation differentes pour TSP euclidien symetrique"
 		public void moveReverse(Routage2 routage) {
-			//Le code est principalement le même que celui de PS4.
-			//On crée une variable reverse valant 0 ou 1 déterminant si on inverse ou non la séquence
+			//Le code est principalement le meme que celui de PS4.
+			//On crée une variable reverse valant 0 ou 1 determinant si on inverse ou non la séquence
 			int n = routage.tailleRoute();
-			int debutSequence = 0;//indice de début de la séquence
-			int longueur = 0;//longueur de la séquence
+			int debutSequence = 0;//indice de debut de la séquence
+			int longueur = 0;//longueur de la sequence
 			int decalage = 0;
 			int reverse = (int) (2*Math.random());
 			while (longueur==0 || decalage==0 || longueur+decalage>=n){
@@ -187,36 +189,36 @@ public class Mutation {
 			int j = debutSequence;
 			int cpt = longueur-1;//on stocke dans cpt tous les compteurs de l'algorithme
 			while(cpt>0){
-				j=getNextIndex(j);
+				j=routage.getNextIndex(j);
 				cpt -=1;
 			}
 			int finSequence = j;
 			ArrayList<Integer> l = new ArrayList<Integer>();
 			cpt=decalage;
-			j=getNextIndex(j);
+			j=routage.getNextIndex(j);
 			while (cpt>0){
 				l.add(routage.getRoute().get(j));
-				j=getNextIndex(j);
+				j=routage.getNextIndex(j);
 				cpt -=1;
 			}
 			//On tient compte ici de reverse
 			if (reverse==0){
 				int i =debutSequence;
-				while(i!=getNextIndex(finSequence)){
+				while(i!=routage.getNextIndex(finSequence)){
 					l.add(routage.getRoute().get(i));
-					i=getNextIndex(i);
+					i=routage.getNextIndex(i);
 				}
 			} else {
 				int i = finSequence;
-				while(i!=getPreviousIndex(debutSequence)){
+				while(i!=routage.getPreviousIndex(debutSequence)){
 					l.add(routage.getRoute().get(i));
-					i=getPreviousIndex(i);
+					i=routage.getPreviousIndex(i);
 				}
 			}
-			//On ajoute les éléments restants, ici 4
+			//On ajoute les elements restants, ici 4
 			while(j!=debutSequence){
 				l.add(routage.getRoute().get(j));
-				j=getNextIndex(j);
+				j=routage.getNextIndex(j);
 			}
 			routage.route = l;
 		}
