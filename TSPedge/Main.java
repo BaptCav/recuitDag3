@@ -81,12 +81,10 @@ class Main{
 
 					
 		
-		//CHANGER LE FICHIER, MARCHE SI LE FICHIER EST UNE MATRICE (exemple brazil58)
-			String fichier2 = "/Users/thomasdoutre/Desktop/ALLTSP/Matrices/FULL_MATRIX/swiss42.tsp";
-			String fichier3 = "/Users/thomasdoutre/Desktop/ALLTSP/Coordonnees/INT/brd14051.tsp";
-			String fichier4 = "/Users/thomasdoutre/Desktop/ALLTSP/Coordonnees/DOUBLE/ch130.tsp";
+		
+			String fichier = "/Users/thomasdoutre/Desktop/ALLTSP/Coordonnees/DOUBLE/ch130.tsp";
 
-			Graphe g = new Graphe(LectureBenchmarks.donneMatrice(fichier3));
+			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
 			
 			
 			ArrayList<Integer> tab_min = new ArrayList<Integer>();
