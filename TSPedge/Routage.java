@@ -82,7 +82,40 @@ public class Routage {
 			
 		}
 		return cpt;
-		
+	}
+	
+	public ArrayList<Integer> greedyRoute(int[][] matMin) {
+		int n = g.nombreDeNoeuds();
+		int prochainCandidat =0;
+		boolean noeudValide =false;
+		ArrayList<Integer> liste = new ArrayList<Integer>();
+		int colonneCandidate = 1;
+		liste.add(matMin[(int)((n)*Math.random())][1]); //Le premier point visite est le voisin le plus proche du point indexÃ© 0	
+		for (int i = 1; i < n; i++) 
+		{
+			prochainCandidat = matMin[liste.get(i-1)][colonneCandidate];
+			for(int l = 0; l<liste.size() ;l++)
+			{
+				if(prochainCandidat == liste.get(l)) // si la prochaine ville est malheureusement deja dans la liste...
+				{
+					colonneCandidate+=1;
+					noeudValide = false;
+					prochainCandidat = matMin[liste.get(i-1)][colonneCandidate];
+					l = -1; // car la boucle la rÃ©incrÃ©mente automatiquement Ã  0 ! ne pas mettre 0 !
+				}
+				else
+				{
+					noeudValide = true;
+				}
+			}
+			if(noeudValide == true)
+			{
+				liste.add(prochainCandidat);
+				noeudValide = false;
+				colonneCandidate = 1;
+			}
+		}
+		return liste;
 	}
 
 
