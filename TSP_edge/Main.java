@@ -1,151 +1,45 @@
 
-import java.util.Scanner;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+//import java.util.NoSuchElementException;
+//import java.util.Scanner;
+import java.io.*;
 class Main{
-	private static BufferedReader br;
-	private static Scanner scanner;
+	static int N =1;
+	public static Double X = 0.0;
+	public static Double Y = 0.0;
+	public static ArrayList<Double> coordX = new ArrayList<Double>();
+	public static ArrayList<Double> coordY = new ArrayList<Double>();
 	public static void main(String[] args) throws IOException{
-		String thisLine;
-		int dimension = 0;
-		boolean fullMatrix = false;
-		boolean upper = false;
-		boolean lower = false;
 		try {
-			String fichier = "C:/Users/Alain/workspace/TSPedge/bayg29.tsp";
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(fichier)));
-			String chaine ="";
-			boolean doitSArreter = false;
-			while (((thisLine = br.readLine()) != null)&&!(doitSArreter)) {
-				boolean ligneDeLaMatrice = (thisLine.startsWith(" "));
-				for(int j=0; j < 10 ; j++){
-					ligneDeLaMatrice = ligneDeLaMatrice || thisLine.startsWith(""+j);
-				}
-				if(thisLine.startsWith("DISPLAY_DATA_SECTION")){
-					doitSArreter = true;
-				}
-				if (ligneDeLaMatrice){
-					chaine = chaine + " " +thisLine;
-				}
-				if(thisLine.startsWith("DIMENSION")){
-					dimension = Integer.parseInt(thisLine.replace("DIMENSION: ", ""));
-				}
-				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("LOWER_DIAG_ROW"))){
-					lower = true;
-				}
-				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("FULL_MATRIX"))){
-					fullMatrix = true;
-				}
-				if((thisLine.startsWith("EDGE_WEIGHT_FORMAT")) && (thisLine.replace("EDGE_WEIGHT_FORMAT: ", "").startsWith("UPPER_ROW"))){
-					upper = true;
+			//CHANGER LE FICHIER, MARCHE SI LE FICHIER EST UNE MATRICE (exemple brazil58)
+			String fichier2 = "/Users/thomasdoutre/Desktop/ALLTSP/Matrices/FULL_MATRIX/swiss42.tsp";
+			String fichier3 = "C:/Users/Alain/workspace/TSPedge/pr1002.tsp";
+			String fichier4 = "/Users/thomasdoutre/Desktop/ALLTSP/Coordonnees/DOUBLE/ch130.tsp";
+			Graphe g = new Graphe(LectureBenchmarks.donneMatrice(fichier3));
+			ArrayList<Integer> tab_min = new ArrayList<Integer>();
+			Routage2 route = new Routage2(g,tab_min);
+			ArrayList<Integer> l = route.getRoute();
+			double[][] matrice = LectureBenchmarks.donneMatrice(fichier3);
+			int[][] matIndex = DistanceTools.sortIndex(matrice);
+			LectureBenchmarks.printMatrix(matIndex);
+			try
+			{
+				for(int i=0; i<N; i++)
+				{
+					PrintWriter sortie = new PrintWriter(new FileWriter("resultats1."+i+".txt"));
+					Recuit.solution(matIndex, g, l, sortie);
+					System.out.println(i);
+					sortie.close();
 				}
 			}
-			scanner = new Scanner(chaine);
-			int[][] matrice = new int[dimension][dimension];
-			if(lower){
-				for(int j=0; j < dimension ; j++){
-					for (int i=0; i <= j ; i++){
-						if (scanner.hasNextInt()) {
-							matrice[j][i] = scanner.nextInt();
-						}
-					}
-				}
-				int[][] mat = matrixAdd(matrice,transposeMatrix(matrice));
-				for(int j=0; j < dimension ; j++){
-					String afficheMatrice = "";
-					for (int i=0; i < dimension ; i++){
-						afficheMatrice = afficheMatrice + " "+mat[j][i];
-					}
-					System.out.println(afficheMatrice);
-				}
-				Graphe g = new Graphe(mat);
-				try {
-					Recuit.solution(g);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else if(fullMatrix) {
-				for(int j=0; j < dimension ; j++){
-					for (int i=0; i < dimension ; i++){
-						if (scanner.hasNextInt()) {
-							matrice[j][i] = scanner.nextInt();
-						}
-					}
-				}
-				for(int j=0; j < dimension ; j++){
-					String afficheMatrice = "";
-					for (int i=0; i < dimension ; i++){
-						afficheMatrice = afficheMatrice + " "+matrice[j][i];
-					}
-					System.out.println(afficheMatrice);
-				}
-				Graphe g = new Graphe(matrice);
-				try {
-					Recuit.solution(g);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else if(upper){
-				for(int j=0; j < dimension ; j++){
-					for (int i=j+1; i <dimension ; i++){
-						if (scanner.hasNextInt()) {
-							matrice[j][i] = scanner.nextInt();
-						}
-					}
-				}
-				for(int j=0; j < dimension ; j++){
-					String afficheMatrice = "MATRICE :";
-					for (int i=0; i < dimension ; i++){
-						afficheMatrice = afficheMatrice + " "+matrice[j][i];
-					}
-					System.out.println(afficheMatrice);
-				}
-				int[][] mat = matrixAdd(matrice,transposeMatrix(matrice));
-				for(int j=0; j < dimension ; j++){
-					String afficheMatrice = "";
-					for (int i=0; i < dimension ; i++){
-						afficheMatrice = afficheMatrice + " "+mat[j][i];
-					}
-					System.out.println(afficheMatrice);
-				}
-				Graphe g = new Graphe(mat);
-				try {
-					Recuit.solution(g);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			catch (InterruptedException e){
+				e.printStackTrace();
 			}
 		} catch (IOException e) {
 			System.err.println("Error: " + e);
 		} catch (NumberFormatException e) {
-			System.err.println("Invalid number");
+			System.err.println("nombre invalide...");
 		}
-	}
-	public static int[][] transposeMatrix(int [][] m){
-		int[][] temp = new int[m[0].length][m.length];
-		for (int i = 0; i < m.length; i++)
-			for (int j = 0; j < m[0].length; j++)
-				temp[j][i] = m[i][j];
-		return temp;
-	}
-	public static int[][] matrixAdd(int[][] A, int[][] B)
-	{
-		int[][]C = new int[A.length][A[0].length];
-		for(int i =0; i < A.length; i++)
-		{
-			for(int j=0; j < A[i].length;j++)
-			{
-				C[i][j] = A[i][j] + B[i][j];
-			}
-		}
-		return C;
 	}
 }
