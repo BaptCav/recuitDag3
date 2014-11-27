@@ -8,13 +8,13 @@ import javax.swing.*;
 public class Recuit extends JFrame
 {
 	private static final long serialVersionUID = 2L;
-	static double temperature = 1000;
-	static double refroidissement = 0.0001;
+	static double temperature = 100;
+	static double refroidissement = 0.0005;
 	static double K = 1; // 0.1 ideal ? Hypothese : T0*K ~ nbre de points = ideal ?
 	static int nbTours = 1;
 	static int Npruning = 20; // on effectue des mutations sur les Npruning plus proches voisins
 	static int fenetre = 100; // de l'ordre de grandeur du nombre de villes
-	static boolean movingAverage = true;
+	static boolean movingAverage = false;
 	public static ArrayList<Double> DeltaE = new ArrayList<Double>();
 
 	// Probabilite d'accepter une solution pire que l'actuelle
@@ -22,7 +22,10 @@ public class Recuit extends JFrame
 	{
 		DeltaE.add(Math.abs(energieCourante - energieNouvelle)); // On conserve les valeurs prises du delta Ã©nergÃ©tique
 		// Si la nouvelle solution est meilleure, alors on accepte !
-
+		if (energieNouvelle < energieCourante)
+		{
+			return 1.0;
+		}
 		// le K peut etre definie a l'aide d'une moyenne glissante.
 		// Constat : prendre la moyenne des deltaE n'a pas l'air idÃ©al... D'oÃ¹ la division par fenetre^2 
 		if(movingAverage)
@@ -60,7 +63,7 @@ public class Recuit extends JFrame
 			// On cree une nouvelle route conÃ§ue Ã  partir de l'ancienne
 			nvelleSolution.clone(solutionCourante);
 			// Sur cette nouvelle route, on effectue une mutation elementaire (2optMove)
-			Mutation.pruningTwoOptMove(matIndex, nvelleSolution, 20);
+			Mutation.pruningTwoOptMove(matIndex,nvelleSolution,Npruning);
 			compteur++;
 			
 			// On recupere l'energie (distance de parcours) des deux routes
@@ -83,7 +86,8 @@ public class Recuit extends JFrame
 			cptTours-=1;
 			}
 			cptTours = nbTours;
-			temperatureRecuit *= 1-refroidissement;
+			temperatureRecuit -= refroidissement;
+			System.out.println(meilleureRoute.getDistance() +" , "+temperatureRecuit);
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
@@ -91,5 +95,4 @@ public class Recuit extends JFrame
 		
 		return meilleureRoute;
 	}   
-
 }
