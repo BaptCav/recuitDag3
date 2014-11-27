@@ -15,15 +15,19 @@ class Main{
 
 	try {
  		
-			String fichier = "C:/Users/belaube_pie/Desktop/bayg29.tsp";
+			String fichier = "/Users/thomasdoutre/Desktop/ALLTSP/TOUS/Brazil58.tsp";
 
 			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
-			ArrayList<Integer> tab_min = new ArrayList<Integer>(); 
-			Routage route = new Routage(g,tab_min); 
-			ArrayList<Integer> l = route.getRoute(); 
-
-			double[][] matriceDistance = TSPParser.donneMatrice(fichier);
-			int[][] matriceIndex = DistanceTools.sortIndex(matriceDistance);
+			
+			
+			ArrayList<Integer> tab_min = new ArrayList<Integer>();
+			tab_min.add(0);
+			tab_min.add(1);
+			tab_min.add(2);
+			tab_min.add(3);
+			tab_min.add(4);
+			Routage route = new Routage(g,tab_min);
+			ArrayList<Integer> l = route.getRoute();
 			
 			try
 			{
@@ -32,12 +36,12 @@ class Main{
 					Writer.creerFichierEnergie(i);
 					Writer.creerFichierProba();
 					
-					Recuit.solution(matriceIndex, g, l);
+					Recuit.solution(g, l);
 					
 					Writer.energie.close();
 					Writer.proba.close();
 
-				}
+				} 
 			}
 			catch (InterruptedException e){
 				e.printStackTrace();

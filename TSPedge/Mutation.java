@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class Mutation {
 	
 	
-	// Mutations regroupÃ©es dans une classe pour plus de fluiditÃ©
-	//Echange deux Ã©lements d'une route. Les entrÃ©es sont les indices correspondants aux noeuds
+	// Mutations regroupées dans une classe pour plus de fluidité
+	//Echange deux élements d'une route. Les entrées sont les indices correspondants aux noeuds
 		public Routage routage;
 	
 		public static void swap(Routage routage,int i, int j){
@@ -32,14 +32,14 @@ public class Mutation {
 			int randIndex2 = 0;//Indice du noeud c1'
 			int i;
 			int j;
-			//  On recalcule les indices de c2 et c1' jusqu'Ã  ce que c2 soit diffÃ©rent de c1'.Notons que le cas c2=c1' ne change pas la route.
+			//  On recalcule les indices de c2 et c1' jusqu'à ce que c2 soit différent de c1'.Notons que le cas c2=c1' ne change pas la route.
 			while (randIndex1 == randIndex2){
 				randIndex1 = (int) (n * Math.random()); //c1'
 				randIndex2 = (int) (n * Math.random()); //c2
 			}
 			i = randIndex1;
 			j = randIndex2;
-			//On itÃ¨re ensuite pour effectuer tous les Ã©changes du twoOptMove
+			//On itère ensuite pour effectuer tous les échanges du twoOptMove
 			while (i!=j && routage.getNextIndex(i)!=j ) {
 				swap(routage,i,j);
 				i=routage.getNextIndex(i);
@@ -47,7 +47,7 @@ public class Mutation {
 			}
 		}
 
-	//Fonction nÃ©cessaire pour threeOptMove : elle rÃ©ordonne trois nombres
+	//Fonction nécessaire pour threeOptMove : elle réordonne trois nombres
 	public int[] order(int i, int j, int k){
 		int[] tab = new int[3];
 		if (i<j && i<k){
@@ -67,7 +67,7 @@ public class Mutation {
 		tab[2]=Math.max(i,j);
 		return tab;
 	}
-	// Attention ! Ici, le threeOptMove n'est valable que pour des graphes symÃ©triques !
+	// Attention ! Ici, le threeOptMove n'est valable que pour des graphes symétriques !
 	public void threeOptMove(Routage routage){
 		int n = routage.tailleRoute();
 		int i = 0;
@@ -101,18 +101,18 @@ public class Mutation {
 		routage.route = l;
 	}
 
-	//La mutation consiste Ã  aller alÃ©atoirement vers une autre route
+	//La mutation consiste à aller aléatoirement vers une autre route
 	public void totalRandom(Routage routage){
 		routage.route = routage.routeInitiale();
 	}
-	//Mutation Ã©quivalente Ã  la mutation PS3 de l'article "Mutation diffÃ©rentes pour TSP euclidien symÃ©trique"
+	//Mutation équivalente à la mutation PS3 de l'article "Mutation différentes pour TSP euclidien symétrique"
 		/*public void changePlace() {
 			int n = routage.tailleRoute();
 			int randIndex1=0;
 			int randIndex2=0;
 			while (randIndex1==randIndex2){
-			randIndex1 = (int) (n * Math.random()); //Indice de l'Ã©lÃ©ment Ã  bouger
-			randIndex2 = (int) (n * Math.random()); //Indice de l'endroit ou on le dÃ©pose
+			randIndex1 = (int) (n * Math.random()); //Indice de l'élément à bouger
+			randIndex2 = (int) (n * Math.random()); //Indice de l'endroit ou on le dépose
 			}
 			int i = randIndex1;
 			while (i!=randIndex2){
@@ -121,11 +121,11 @@ public class Mutation {
 			}
 		}*/
 		
-		//Mutation Ã©quivalente Ã  la mutation PS4 de l'article "Mutation diffÃ©rentes pour TSP euclidien symÃ©trique"
+		//Mutation équivalente à la mutation PS4 de l'article "Mutation différentes pour TSP euclidien symétrique"
 		public void moveSequence() {
 			int n = routage.tailleRoute();
-			int debutSequence = 0;//indice de dï¿½but de la sï¿½quence
-			int longueur = 0;//longueur de la sï¿½quence
+			int debutSequence = 0;//indice de d�but de la s�quence
+			int longueur = 0;//longueur de la s�quence
 			int decalage = 0;
 			while (longueur==0 || decalage==0 || longueur+decalage>=n){
 				debutSequence = (int) (n * Math.random());
@@ -133,13 +133,13 @@ public class Mutation {
 				decalage = (int) (n * Math.random());
 			}
 			//Exemple avec la route : 0->1->2->3->4->5->6 (les entiers representent les emplacements initiaux de chaque noeud dans la route)
-			//Ne pas oublier de voir la route comme un ensemble circulaire (il y a rebouclage du dernier ï¿½lï¿½ment sur le dernier)
+			//Ne pas oublier de voir la route comme un ensemble circulaire (il y a rebouclage du dernier �l�ment sur le dernier)
 					//n=7
 					//debutSequence=5
-					//longueurSequence=4 (la sï¿½quence est donc 5->6->0->1)
+					//longueurSequence=4 (la s�quence est donc 5->6->0->1)
 					//decalage=2
-					//On veut donc obtenir l'algorithme passant de 5->6->0->1->2->3->4 ï¿½ 2->3->5->6->0->1->4
-			//On va chercher l'indice de fin de la sï¿½quence
+					//On veut donc obtenir l'algorithme passant de 5->6->0->1->2->3->4 � 2->3->5->6->0->1->4
+			//On va chercher l'indice de fin de la s�quence
 			int j = debutSequence;
 			int cpt = longueur-1;//on stocke dans cpt tous les compteurs de l'algorithme
 			while(cpt>0){
@@ -173,9 +173,9 @@ public class Mutation {
 		//Mutation equivalente sur la mutation PS6 de l'article "Mutation differentes pour TSP euclidien symetrique"
 		public void moveReverse(Routage routage) {
 			//Le code est principalement le meme que celui de PS4.
-			//On crï¿½e une variable reverse valant 0 ou 1 determinant si on inverse ou non la sï¿½quence
+			//On cr�e une variable reverse valant 0 ou 1 determinant si on inverse ou non la s�quence
 			int n = routage.tailleRoute();
-			int debutSequence = 0;//indice de debut de la sï¿½quence
+			int debutSequence = 0;//indice de debut de la s�quence
 			int longueur = 0;//longueur de la sequence
 			int decalage = 0;
 			int reverse = (int) (2*Math.random());
@@ -220,32 +220,4 @@ public class Mutation {
 			}
 			routage.route = l;
 		}
-		
-		public static void pruningTwoOptMove(int[][] mat,Routage routage, int N) { 
-			int n = routage.tailleRoute(); 
-			int randIndex1 = 0;//Indice du noeud c2 
-			int randIndex2 = 0;//Indice du noeud c1' 
-			int i; 
-			int j; 
-			// On recalcule les indices de c2 et c1' jusqu'à ce que c2 soit différent de c1'.Notons que le cas c2=c1' ne change pas la route. 
-			while (randIndex1 == randIndex2){ 
-				randIndex1 = (int) (n * Math.random()); //c1' 
-				int b= (int) ((N)*Math.random()); 
-				if(b == 0) 
-				{ 
-					b = 1; 
-				} 
-				randIndex2 = mat[randIndex1][b];//c2 
-				//System.out.println("("+randIndex1+","+randIndex2+")"); 
-			} 
-			i = randIndex1; 
-			j = randIndex2; 
-			//On itère ensuite pour effectuer tous les échanges du txoOptMove 
-			while (i!=j && routage.getNextIndex(i)!=j ) { 
-				swap(routage,i,j); 
-				i=routage.getNextIndex(i); 
-				j=routage.getPreviousIndex(j); 
-			} 
-		} 
-
 }

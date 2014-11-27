@@ -8,70 +8,60 @@ import javax.swing.*;
 public class Recuit extends JFrame
 {
 	private static final long serialVersionUID = 2L;
-	static double temperature = 100;
-	static double refroidissement = 0.0005;
-	static double K = 1; // 0.1 ideal ? Hypothese : T0*K ~ nbre de points = ideal ?
+	
 	static int nbTours = 1;
-	static int Npruning = 20; // on effectue des mutations sur les Npruning plus proches voisins
-	static int fenetre = 100; // de l'ordre de grandeur du nombre de villes
-	static boolean movingAverage = false;
-	public static ArrayList<Double> DeltaE = new ArrayList<Double>();
+	static ParametreK K = new ParametreK(1);
+	static ParametreT temperature = new ParametreT(1000, 0.0001);
+	static Energie listeEnergie = new ListeEnergie(false, new ArrayList<Double>(),100);
+	static Energie energieCourante;
+	static Energie energieNouvelle;
+	
 
-	// Probabilite d'accepter une solution pire que l'actuelle
-	public static double probaAcceptation(double energieCourante, double energieNouvelle, double temperature/*, PrintWriter sortie*/) throws IOException 
+	
+	
+	public static double probaAcceptation(NombreEnergie energieCourante, NombreEnergie energieNouvelle, ParametreT temperature) throws IOException 
 	{
-		DeltaE.add(Math.abs(energieCourante - energieNouvelle)); // On conserve les valeurs prises du delta Ã©nergÃ©tique
-		// Si la nouvelle solution est meilleure, alors on accepte !
-		if (energieNouvelle < energieCourante)
-		{
-			return 1.0;
+		listeEnergie.ajoutListe(Math.abs(energieCourante.getEnergie() - energieNouvelle.getEnergie()));
+		if(listeEnergie.doitRenvoyerK()){
+				K.setK(listeEnergie.donneK());
 		}
-		// le K peut etre definie a l'aide d'une moyenne glissante.
-		// Constat : prendre la moyenne des deltaE n'a pas l'air idÃ©al... D'oÃ¹ la division par fenetre^2 
-		if(movingAverage)
-		{
-			if(DeltaE.size() > fenetre)
-			{
-				double somme = 0;
-				for(int i = DeltaE.size(); i>DeltaE.size() - fenetre; i--)
-				{
-					somme = somme + DeltaE.get(i-1);
-				}
-				K = somme/(fenetre*fenetre);
-			}
-
+		if(energieNouvelle.getEnergie()<energieCourante.getEnergie()){
+			return 1;
 		}
-		// si elle est pire, on definit une proba pour accepter eventuellement cette solution...
-		return Math.exp((energieCourante - energieNouvelle) / (K*temperature));
+		return Math.exp((energieCourante.getEnergie() - energieNouvelle.getEnergie()) / (K.getK()*temperature.getTemperature()));
 	}
-	public static Routage solution(int[][] matIndex, Graphe g,ArrayList<Integer> liste) throws IOException, InterruptedException
+	
+	
+	
+	public static Routage solution(Graphe g,ArrayList<Integer> liste) throws IOException, InterruptedException
 	{
 		// On definit une route aleatoire en premier lieu
-		Routage solutionCourante = new Routage(g,matIndex);
-		System.out.println(" distance Greedy = "+solutionCourante.getDistance());
+		Routage solutionCourante = new Routage(g);
 		int compteur=0;
 		// On en calcule l'energie
 		// et on dit que pour l'instant, c'est la meilleure route !
 		Routage meilleureRoute = new Routage(g);
 		Routage nvelleSolution = new Routage(g);
-		double temperatureRecuit = temperature;
+		ParametreT temperatureRecuit = new ParametreT(temperature.getTemperature(),temperature.getFacteurDeRefroidissement());
+		//double temperatureRecuit = temperature;
 		int cptTours = nbTours;
 		// On repete tant que la temperature est assez haute
-		while (temperatureRecuit > 1) {
+		while (temperatureRecuit.getTemperature() > 1) {
 			while(cptTours > 0)
 			{
-			// On cree une nouvelle route conÃ§ue Ã  partir de l'ancienne
+			// On cree une nouvelle route conçue à partir de l'ancienne
 			nvelleSolution.clone(solutionCourante);
 			// Sur cette nouvelle route, on effectue une mutation elementaire (2optMove)
-			Mutation.pruningTwoOptMove(matIndex,nvelleSolution,Npruning);
+			Mutation.twoOptMove(nvelleSolution);
 			compteur++;
 			
 			// On recupere l'energie (distance de parcours) des deux routes
-			double energieCourante = solutionCourante.getDistance();
-			double energieVoisine = nvelleSolution.getDistance();
+			NombreEnergie energieCourante = new NombreEnergie(solutionCourante.getDistance());
+			NombreEnergie energieVoisine = new NombreEnergie(nvelleSolution.getDistance());
+
 
 			double p = probaAcceptation(energieCourante, energieVoisine, temperatureRecuit);
-			// On dÃ©cide si on accepte cette nouvelle route comme vu prÃ©cÃ©demment
+			// On décide si on accepte cette nouvelle route comme vu précédemment
 			if (p >= Math.random()) {
 				solutionCourante.clone(nvelleSolution);
 			}
@@ -86,13 +76,17 @@ public class Recuit extends JFrame
 			cptTours-=1;
 			}
 			cptTours = nbTours;
-			temperatureRecuit -= refroidissement;
-			System.out.println(meilleureRoute.getDistance() +" , "+temperatureRecuit);
+			temperatureRecuit.refroidissement();;
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
 		System.out.println("distance meilleure route = " + meilleureRoute.getDistance());
 		
 		return meilleureRoute;
+	
+
+
 	}   
+
 }
+
