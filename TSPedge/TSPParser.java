@@ -13,6 +13,8 @@ public class TSPParser {
 		Elle permet la lecture des Benchmarks présentés sour forme de matrice
 		et sous forme de coordonnées associées à des points de l'espace
 	 */
+	
+	
 
 	public static double[][] donneMatrice (String stringFichier) {
 
@@ -170,6 +172,8 @@ public class TSPParser {
 
 			//Disjonction de cas selon le type
 
+			
+			
 			if(LOWER_DIAG_ROW){
 
 				for(int j=0; j < dimension ; j++){
