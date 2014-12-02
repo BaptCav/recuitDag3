@@ -1,8 +1,6 @@
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Comparator;
-import static java.lang.System.out;
 
 class IndexValue {
    final int i;

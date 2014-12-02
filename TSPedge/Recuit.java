@@ -15,6 +15,7 @@ public class Recuit extends JFrame
 	static Energie listeEnergie = new ListeEnergie(false, new ArrayList<Double>(),100);
 	static Energie energieCourante;
 	static Energie energieNouvelle;
+	static double solutionNumerique = -1;
 	
 
 	
@@ -80,6 +81,7 @@ public class Recuit extends JFrame
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
+		solutionNumerique = meilleureRoute.getDistance();
 		System.out.println("distance meilleure route = " + meilleureRoute.getDistance());
 		
 		return meilleureRoute;
