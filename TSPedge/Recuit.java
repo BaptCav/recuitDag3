@@ -16,6 +16,7 @@ public class Recuit extends JFrame
 	static Energie energieCourante;
 	static Energie energieNouvelle;
 	static double solutionNumerique = -1;
+	static long tempsExecution = -1;
 	
 
 	
@@ -36,6 +37,8 @@ public class Recuit extends JFrame
 	
 	public static Routage solution(Graphe g,ArrayList<Integer> liste) throws IOException, InterruptedException
 	{
+		long debut = System.currentTimeMillis();
+		
 		// On definit une route aleatoire en premier lieu
 		Routage solutionCourante = new Routage(g);
 		int compteur=0;
@@ -71,8 +74,8 @@ public class Recuit extends JFrame
 				meilleureRoute.clone(solutionCourante);
 			}
 			
-			Writer.ecriture(compteur, meilleureRoute.getDistance(), Writer.energie);
-			Writer.ecriture(compteur, p, Writer.proba);
+			//Writer.ecriture(compteur, meilleureRoute.getDistance(), Writer.energie);
+			//Writer.ecriture(compteur, p, Writer.proba);
 			
 			cptTours-=1;
 			}
@@ -81,6 +84,7 @@ public class Recuit extends JFrame
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
+		tempsExecution = System.currentTimeMillis()-debut;
 		solutionNumerique = meilleureRoute.getDistance();
 		System.out.println("distance meilleure route = " + meilleureRoute.getDistance());
 		
