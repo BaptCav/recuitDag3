@@ -1,14 +1,22 @@
 
+
 public class EnergieCinetiqueTsp extends EnergieCinetique {
 	
 	public static double calculer(ParticuleTSP p){
-		double compteur = 0;
-		Routage[] r = p.getRoutage();
-		for(Routage i :r){
+		Routage[] r = p.getRoutage().clone();
+		double compteurspinique=0;
+		for(int i =0; i<r.length-1;i++){
 			//// IL reste a coder le calcul particulier
+			int[][] Mi = r[i].toIsing();
+			int[][] Mj = r[i+1].toIsing();
+			for(int k =0;k<Mi.length;k++){
+				for(int l =0;l<Mi[0].length;l++){
+					compteurspinique+=Mi[k][l]*Mj[k][l];
+				}
+			}	
 		}
 		
-		return compteur;
+		return Ponderation.calcul(p.getT())*compteurspinique;
 	}
 
 }

@@ -14,7 +14,7 @@ public class Probleme extends Particule{
 		for (Etat i:this.etat){
 			compteur +=EnergiePotentielle.calculer(i);	
 		}
-		return compteur;
+		return compteur/etat.length;
 	}
 	
 	

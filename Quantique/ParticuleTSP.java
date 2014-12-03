@@ -10,7 +10,7 @@ public class ParticuleTSP extends Probleme {
 		for (Etat i:this.etat){
 			compteur +=EnergiePotentielleTsp.calculer(i);	
 		}
-		return compteur;
+		return compteur/etat.length;
 	}
 	
 	public double calculerEnergie(){
@@ -19,6 +19,10 @@ public class ParticuleTSP extends Probleme {
 	
 	public Routage[] getRoutage(){
 		return etat;
+	}
+	public ParametreT getTemperature() {
+		// TODO Auto-generated method stub
+		return this.getT();
 	}
 
 }
