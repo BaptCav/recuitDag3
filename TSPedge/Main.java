@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-//import java.util.NoSuchElementException;
-//import java.util.Scanner;
 import java.io.*;
+
 
 class Main{
 	static int N =20;
@@ -13,13 +12,13 @@ class Main{
 	public static void main(String[] args) throws IOException{
 
 
-	try {
- 		
-			String fichier = "/Users/thomasdoutre/Desktop/ALLTSP/TOUS/Brazil58.tsp";
+		try {
 
+			ExcelManager excelManager = new ExcelManager("/Users/thomasdoutre/Desktop/BilanTSP.xls");
+			String fichier = "/Users/thomasdoutre/Desktop/ALLTSP/TOUS/Brazil58.tsp";
 			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
-			
-			
+
+
 			ArrayList<Integer> tab_min = new ArrayList<Integer>();
 			tab_min.add(0);
 			tab_min.add(1);
@@ -28,20 +27,24 @@ class Main{
 			tab_min.add(4);
 			Routage route = new Routage(g,tab_min);
 			ArrayList<Integer> l = route.getRoute();
-			
+
 			try
 			{
-				for(int i=0; i<N; i++)
-				{
-					Writer.creerFichierEnergie(i);
-					Writer.creerFichierProba();
-					
-					Recuit.solution(g, l);
-					
-					Writer.energie.close();
-					Writer.proba.close();
+				for(int i=65; i<87; i++){
 
-				} 
+					String nomBenchmark = excelManager.lireStringCellule(i, 0).replace(" ", "");
+					fichier = "/Users/thomasdoutre/Desktop/ALLTSP/TOUS/"+nomBenchmark+".tsp";
+					g = new Graphe(TSPParser.donneMatrice(fichier));
+
+					for(int j=11; j<26; j++)
+					{
+
+						Recuit.solution(g, l);
+						excelManager.modifierCellule(i, j, Recuit.solutionNumerique);
+
+					} 
+
+				}
 			}
 			catch (InterruptedException e){
 				e.printStackTrace();

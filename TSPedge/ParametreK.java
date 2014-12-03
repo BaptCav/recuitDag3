@@ -1,7 +1,7 @@
 
 public class ParametreK {
 
-	double K =1;
+	private double K =1;
 	public ParametreK(double e){
 		this.K = e;
 	}
