@@ -1,8 +1,5 @@
 public class EnergieCinetique {
-public static double calculer(Particule p){
-	/// A MODIFIER
-	
-	
+public static double calculer(Particule p){	
 	return 0;
 }
 }

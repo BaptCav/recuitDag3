@@ -72,6 +72,7 @@ public class Routage extends Etat {
 
 
 	//Rend la representation d'Ising du routage
+	
 	public int[][] toIsing(){
 		int n = this.tailleRoute();
 		int[][] m = new int[n][n];
