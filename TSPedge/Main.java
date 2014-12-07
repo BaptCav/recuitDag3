@@ -39,7 +39,7 @@ class Main{
 					for(int j=11; j<26; j++)
 					{
 
-						Recuit.solution(g, l);
+						Recuit.solution(g, l, 100000);
 						excelManager.modifierCellule(i, j, Recuit.solutionNumerique);
 
 					} 

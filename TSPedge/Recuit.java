@@ -11,7 +11,7 @@ public class Recuit extends JFrame
 
 	static int nbTours = 1;
 	static ParametreK K = new ParametreK(1);
-	static ParametreT temperature = new ParametreT(1000, 0.0001);
+	static Convergence convergence = new Convergence(0);
 	static Energie listeEnergie = new ListeEnergie(false, new ArrayList<Double>(),100);
 	static Energie energieCourante;
 	static Energie energieNouvelle;
@@ -35,22 +35,35 @@ public class Recuit extends JFrame
 
 
 
-	public static Routage solution(Graphe g,ArrayList<Integer> liste) throws IOException, InterruptedException
+	public static Routage solution(Graphe g,ArrayList<Integer> liste,int nombreIterations) throws IOException, InterruptedException
 	{
 		long debut = System.currentTimeMillis();
 
+		//On introduit le parametreur suivant la convergence introduite en argument statique
+				ParametreurExp param1 = new ParametreurExp(g,nombreIterations);;
+				ParametreurLin param2 = new ParametreurLin(g,nombreIterations);
+				ParametreT temperature;
+				if (convergence.getConvergence() == 1){
+					temperature = param1.parametrageT();
+				} else {
+					temperature = param2.parametrageT();
+				}
+				
 		// On definit une route aleatoire en premier lieu
 		Routage solutionCourante = new Routage(g);
+		
+		//Compteur pour le nombre d'iterations
+		int compteur = 0 ;
 		
 		// On en calcule l'energie
 		// et on dit que pour l'instant, c'est la meilleure route !
 		Routage meilleureRoute = new Routage(g);
 		Routage nvelleSolution = new Routage(g);
-		ParametreT temperatureRecuit = new ParametreT(temperature.getTemperature(),temperature.getFacteurDeRefroidissement());
+		ParametreT temperatureRecuit = new ParametreT(temperature.getTemperature(),temperature.getFacteurDeRefroidissement(),temperature.getTemperatureFin());
 		//double temperatureRecuit = temperature;
 		int cptTours = nbTours;
 		// On repete tant que la temperature est assez haute
-		while (temperatureRecuit.getTemperature() > 1) {
+		while (compteur < nombreIterations) {
 			while(cptTours > 0)
 			{
 				// On cree une nouvelle route conçue à partir de l'ancienne
@@ -74,8 +87,13 @@ public class Recuit extends JFrame
 
 				cptTours-=1;
 			}
+			compteur++ ;
 			cptTours = nbTours;
-			temperatureRecuit.refroidissement();;
+			if (convergence.getConvergence() == 1){
+				temperatureRecuit.refroidissementExp();
+			} else {
+				temperatureRecuit.refroidissementLin();
+			}
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
