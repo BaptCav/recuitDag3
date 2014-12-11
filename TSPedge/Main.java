@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import modele.*;
 import io.*;
 
