@@ -26,14 +26,14 @@ public class ParametreT {
 	public void setTemperatureFin(double temperaturefin){
 		this.temperaturefin = temperaturefin;
 	}
-//Get et Set du refroidissement, refroidissement de la temperature Recuit en exponentiel et lineaire
-	public void refroidissementExp(){
+//Get et Set du refroidissement
+	/*public void refroidissementExp(){
 		this.temperature *= 1-this.facteurDeRefroidissement;
 	}
 	
 	public void refroidissementLin(){
 		this.temperature -= this.facteurDeRefroidissement;
-	}
+	}*/
 
 	public double getFacteurDeRefroidissement() {
 		return this.facteurDeRefroidissement;
