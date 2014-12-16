@@ -2,25 +2,26 @@ package mutation;
 
 import java.util.Collections;
 
+import modele.Etat;
 import modele.Routage;
 
 public class Swap implements IMutation {
+	int i;
+	int j;
 
-	@Override
-	public void faire(Routage r) {
-		// TODO Auto-generated method stub
-
+	public Swap(int i, int j){
+		this.i=i;
+		this.j=j;
 	}
-
 	@Override
-	public double calculer(Routage r) {
+	public double calculer(Etat e) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 
-	public static void faire(Routage r , int i,int j){
-
+	public void faire(Etat e){
+		Routage r = (Routage) e;
 		Collections.swap(r.getRoute(),i,j);
 	}
 

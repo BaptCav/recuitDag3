@@ -42,10 +42,12 @@ public class Recuit extends JFrame
 	{
 	
 		//On introduit le parametreur suivant la convergence introduite en argument statique
-		Parametreur param = new ParametreurLin(g,nombreIterations);
+		Parametreur param = new ParametreurExp(g,nombreIterations);
 		int compteur =0;
 		ParametreT temperature = param.getInitialTemperature();
 	
+		//Initialisation de la variable mutation
+		TwoOptMove mutation = new TwoOptMove(0,0);
 		// On definit une route aleatoire en premier lieu
 		Routage routage = new Routage(g);
 		
@@ -53,7 +55,7 @@ public class Recuit extends JFrame
 		// et on dit que pour l'instant, c'est la meilleure route !
 		Routage meilleureRoute = new Routage(g);
 		
-		
+		int n = g.getdists().length;
 		ParametreT temperatureRecuit = new ParametreT(temperature.getTemperature(),temperature.getFacteurDeRefroidissement(),temperature.getTemperatureFin());
 		//double temperatureRecuit = temperature;
 
@@ -61,27 +63,15 @@ public class Recuit extends JFrame
 		while (compteur < nombreIterations) {
 			int cptTours = 100;
 			while(cptTours > 0)
-			{
-				int n = routage.tailleRoute();
-				int randIndex1 = 0;//Indice du noeud c2
-				int randIndex2 = 0;//Indice du noeud c1'
-				int i;
-				int j;
-				//  On recalcule les indices de c2 et c1' jusqu'à ce que c2 soit différent de c1'.Notons que le cas c2=c1' ne change pas la route.
-				while ((randIndex1 == randIndex2) || routage.getNextIndex(randIndex1)==randIndex2){
-					randIndex1 = (int) (n * Math.random()); //c1'
-					randIndex2 = (int) (n * Math.random()); //c2
-				}
-				i = randIndex1;
-				j = randIndex2;
-				
-				deltaE= new NombreEnergie(TwoOptMove.calculer(routage,i,j));
+			{	
+				mutation = new TwoOptMove(n);
+				deltaE= new NombreEnergie(mutation.calculer(routage));
 				
 
 				double p = probaAcceptation((NombreEnergie) deltaE, temperatureRecuit);
 				// On décide si on accepte cette nouvelle route comme vu précédemment
 				if (p >= Math.random()) {
-					TwoOptMove.faire(routage,i,j);
+					mutation.faire(routage);
 				}
 				
 				if (routage.getDistance() < meilleureRoute.getDistance()) {
@@ -92,10 +82,12 @@ public class Recuit extends JFrame
 			}
 			compteur++;
 			param.refroidir(temperatureRecuit);
+			//System.out.println("best: " + meilleureRoute.getDistance());
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
 		solutionNumerique = meilleureRoute.getDistance();
+		System.out.println(meilleureRoute.getDistance());
 		return meilleureRoute;
 		
 

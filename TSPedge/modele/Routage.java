@@ -1,11 +1,13 @@
 package modele;
 import java.util.ArrayList;
 import java.util.Collections;
-public class Routage {
+public class Routage extends Etat {
 	ArrayList<Integer> route ;
 	Graphe g;
 	
-	
+	public Routage(ArrayList<Integer> l){
+		this.route=l;
+	}
 	public ArrayList<Integer> getRoute(){
 		return this.route;
 	}
@@ -58,6 +60,7 @@ public class Routage {
 			}
 	}
 	
+	
 	public int getPreviousIndex(int index){
 		if (index==0) {
 			return  (this.tailleRoute() - 1);
@@ -65,6 +68,7 @@ public class Routage {
 			return (index-1);
 		}
 	}
+	
 
 		public String toString() {
 			int n = this.tailleRoute();

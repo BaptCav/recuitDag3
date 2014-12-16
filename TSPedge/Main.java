@@ -1,5 +1,4 @@
 import modele.*;
-import mutation.TwoOptMove;
 import io.*;
 
 import java.util.ArrayList;
@@ -15,26 +14,24 @@ class Main{
 		try {
 
 			ExcelManager excelManager = new ExcelManager("C:/Users/berge_pie/Desktop/BilanTSPlin.xls");
-			String fichier = "C:/Users/berge_pie/Desktop/benchmark/Brazil58.tsp";
+			String fichier = "C:/Users/Pierre/Desktop/benchmark/brazil58.tsp";
 			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
 			Routage route = new Routage(g);
 			ArrayList<Integer> l = new ArrayList<Integer>();
 			
 			try
 			{
-				for(int i=12; i<111; i++){
+				for(int i=12; i<13; i++){
 
 					String nomBenchmark = excelManager.lireStringCellule(i, 0).replace(" ", "");
-					fichier = "C:/Users/berge_pie/Desktop/benchmark/"+nomBenchmark+".tsp";
+					fichier = "C:/Users/Pierre/Desktop/benchmark/"+nomBenchmark+".tsp";
 					g = new Graphe(TSPParser.donneMatrice(fichier));
 					route = new Routage(g);
 					l = route.getRoute();
 					int n = g.getdists().length;
 					
-					for(int j=8; j<N; j++)
+					for(int j=11; j<N; j++)
 					{
-						
-					
 						Recuit.solution(g, l,n*n);
 						excelManager.modifierCellule(i,j,Recuit.solutionNumerique);
 					} 
