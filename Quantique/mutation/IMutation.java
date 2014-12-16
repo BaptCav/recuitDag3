@@ -1,3 +1,7 @@
+package mutation;
+import modele.Etat;
+import modele.Probleme;
+
 public interface IMutation {
 public void faire(Probleme p);
 public void defaire(Probleme p);

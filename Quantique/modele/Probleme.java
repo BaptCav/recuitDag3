@@ -1,3 +1,7 @@
+package modele;
+import parametrage.EnergieCinetique;
+import parametrage.EnergiePotentielle;
+
 public class Probleme extends Particule{
 
 	// On rajoute de plus une seed de génération de nombres aléatoires
@@ -14,7 +18,7 @@ public class Probleme extends Particule{
 		for (Etat i:this.etat){
 			compteur +=EnergiePotentielle.calculer(i);	
 		}
-		return compteur/etat.length;
+		return compteur/this.etat.length;
 	}
 	
 	

@@ -1,3 +1,4 @@
+package modele;
 public class Graphe {
 
 	// Un graphe est défini par une matrice carrée représentant les distances entre chaque noeud
@@ -5,7 +6,7 @@ public class Graphe {
 
 	//Constructeur
 	public Graphe(double[][] tab) {
-		matriceDesDistances = tab;
+		this.matriceDesDistances = tab;
 	}
 	
 	public double[][] getdists(){
@@ -14,12 +15,12 @@ public class Graphe {
 
 	//Fournit la longueur entre 2 noeuds
 	public double longueurEntre(int index1, int index2) {
-		return matriceDesDistances[index1][index2];
+		return this.matriceDesDistances[index1][index2];
 	}
 
 	//Renvoie le nombre de noeuds du graphe
 	public int nombreDeNoeuds() {
-		return matriceDesDistances.length;
+		return this.matriceDesDistances.length;
 	}
 
 }

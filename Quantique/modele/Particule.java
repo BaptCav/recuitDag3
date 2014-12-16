@@ -1,3 +1,6 @@
+package modele;
+import parametrage.ParametreT;
+
 public class Particule {
  Etat[] etat;
  ParametreT T;

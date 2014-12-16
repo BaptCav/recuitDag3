@@ -1,13 +1,15 @@
+package modele;
+
 import java.util.ArrayList;
 import java.util.Collections;
 public class Routage extends Etat {
 	ArrayList<Integer> route ;
 	Graphe g;
 	public ArrayList<Integer> getRoute(){
-		return route;
+		return this.route;
 	}
 	public int tailleRoute() {
-		return route.size();
+		return this.route.size();
 	}
 	public Routage (Graphe g){
 		this.g = g;
@@ -18,7 +20,7 @@ public class Routage extends Etat {
 		this.route=liste;
 	}
 	public ArrayList<Integer> routeInitiale() {
-		int n = g.nombreDeNoeuds();
+		int n = this.g.nombreDeNoeuds();
 		ArrayList<Integer> liste = new ArrayList<Integer>();
 		for (int index = 0; index < n; index++) {
 			liste.add(new Integer(index));
@@ -27,12 +29,15 @@ public class Routage extends Etat {
 		Collections.shuffle(liste);
 		return liste;
 	}
-	public void clone(Routage modele)
+	public Routage clone()
 	{
-		int n = g.nombreDeNoeuds();
+		Routage clone= new Routage(this.g);
+		int n = this.g.nombreDeNoeuds();
+		ArrayList<Integer> l =clone.getRoute();
 		for (int index = 0; index < n; index++){
-			this.getRoute().set(index, modele.route.get(index));
+			l.set(index, this.route.get(index));
 		}
+		return clone;
 	}
 	public Graphe getGraphe(){
 		return this.g;
@@ -55,7 +60,7 @@ public class Routage extends Etat {
 		int n = this.tailleRoute();
 		String s = "";
 		for (int index = 0; index < n; index++){
-			s += route.get(index).intValue() + "->";
+			s += this.route.get(index).intValue() + "->";
 		}
 		return s;
 	}
