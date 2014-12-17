@@ -23,7 +23,7 @@ public class Recuit extends JFrame
 
 
 
-	public static double probaAcceptation(NombreEnergie deltaE, ParametreT temperature) throws IOException 
+	public static double probaAcceptation(NombreEnergie deltaE, Temperature temperature) throws IOException 
 	{
 	/*	listeEnergie.ajoutListe(Math.abs(deltaE.getEnergie()));
 		if(listeEnergie.doitRenvoyerK()){
@@ -33,7 +33,7 @@ public class Recuit extends JFrame
 		if(deltaE.getEnergie()<0){
 			return 1;
 		}
-		return Math.exp((-deltaE.getEnergie()) / (K.getK()*temperature.getTemperature()));
+		return Math.exp((-deltaE.getEnergie()) / (K.getK()*temperature.getValue()));
 	}
 
 
@@ -42,9 +42,9 @@ public class Recuit extends JFrame
 	{
 	
 		//On introduit le parametreur suivant la convergence introduite en argument statique
-		Parametreur param = new ParametreurExp(g,nombreIterations);
+		Parametreur param = new ParametreurLog(g,nombreIterations);
 		int compteur =0;
-		ParametreT temperature = param.getInitialTemperature();
+		ParametreT parametreT = param.getInitialTemperature();
 	
 		//Initialisation de la variable mutation
 		TwoOptMove mutation = new TwoOptMove(0,0);
@@ -56,7 +56,7 @@ public class Recuit extends JFrame
 		Routage meilleureRoute = new Routage(g);
 		
 		int n = g.getdists().length;
-		ParametreT temperatureRecuit = new ParametreT(temperature.getTemperature(),temperature.getFacteurDeRefroidissement(),temperature.getTemperatureFin());
+		Temperature temperatureRecuit = new Temperature(parametreT.getTemperatureDebut().getValue());
 		//double temperatureRecuit = temperature;
 
 		// On repete tant que la temperature est assez haute
@@ -81,13 +81,11 @@ public class Recuit extends JFrame
 				cptTours-=1;
 			}
 			compteur++;
-			param.refroidir(temperatureRecuit);
-			//System.out.println("best: " + meilleureRoute.getDistance());
+			param.refroidir(temperatureRecuit,compteur);
 		}
 
 		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
 		solutionNumerique = meilleureRoute.getDistance();
-		System.out.println(meilleureRoute.getDistance());
 		return meilleureRoute;
 		
 

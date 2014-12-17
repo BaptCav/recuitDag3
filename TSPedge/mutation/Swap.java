@@ -22,7 +22,7 @@ public class Swap implements IMutation {
 
 	public void faire(Etat e){
 		Routage r = (Routage) e;
-		Collections.swap(r.getRoute(),i,j);
+		Collections.swap(r.getRoute(),this.i,this.j);
 	}
 
 

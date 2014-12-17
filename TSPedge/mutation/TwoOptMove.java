@@ -31,21 +31,21 @@ public class TwoOptMove implements IMutation {
 		ArrayList<Integer> l = r.getRoute();
 		int k;
 		int n;
-		if(j==l.size()-1){
+		if(this.j==l.size()-1){
 			n=0;
 		}else{
-			n=j+1;
+			n=this.j+1;
 		}
-		if(i==0){
+		if(this.i==0){
 			k=l.size()-1;
 		}else{
-			k=i-1;
+			k=this.i-1;
 		}
 		double[][]m = r.getGraphe().getdists();
-		double c1 =m[ l.get(i)][ l.get(k)];
-		double c2=m[ l.get(j)][ l.get(n)];
-		double c3=m[ l.get(i)][ l.get(n)];
-		double c4=m[ l.get(j)][ l.get(k)];
+		double c1 =m[ l.get(this.i)][ l.get(k)];
+		double c2=m[ l.get(this.j)][ l.get(n)];
+		double c3=m[ l.get(this.i)][ l.get(n)];
+		double c4=m[ l.get(this.j)][ l.get(k)];
 		
 		// Routage r2 = r.clone();
 		 //TwoOptMove.faire(r2,i,j);
@@ -58,8 +58,8 @@ public class TwoOptMove implements IMutation {
 	
 	public void faire (Etat e){
 		Routage r = (Routage) e;
-		int k = i;
-		int l = j;
+		int k = this.i;
+		int l = this.j;
 		Swap s = new Swap(k,l);
 		s.faire(e);
 

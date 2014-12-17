@@ -13,24 +13,24 @@ class Main{
 	public static void main(String[] args) throws IOException{
 		try {
 
-			ExcelManager excelManager = new ExcelManager("C:/Users/berge_pie/Desktop/BilanTSPlin.xls");
-			String fichier = "C:/Users/Pierre/Desktop/benchmark/brazil58.tsp";
+			ExcelManager excelManager = new ExcelManager("C:/Users/berge_pie/Desktop/BilanTSPLog.xls");
+			String fichier = "C:/Users/berge_pie/Desktop/benchmark/brazil58.tsp";
 			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
 			Routage route = new Routage(g);
 			ArrayList<Integer> l = new ArrayList<Integer>();
 			
 			try
 			{
-				for(int i=12; i<13; i++){
+				for(int i=44; i<45; i++){
 
 					String nomBenchmark = excelManager.lireStringCellule(i, 0).replace(" ", "");
-					fichier = "C:/Users/Pierre/Desktop/benchmark/"+nomBenchmark+".tsp";
+					fichier = "C:/Users/berge_pie/Desktop/benchmark/"+nomBenchmark+".tsp";
 					g = new Graphe(TSPParser.donneMatrice(fichier));
 					route = new Routage(g);
 					l = route.getRoute();
 					int n = g.getdists().length;
 					
-					for(int j=11; j<N; j++)
+					for(int j=8; j<N; j++)
 					{
 						Recuit.solution(g, l,n*n);
 						excelManager.modifierCellule(i,j,Recuit.solutionNumerique);

@@ -34,13 +34,17 @@ public class ParametreurLin extends Parametreur {
 		}
 		Collections.sort(l);
 		//Ici, on choisit de se baser autour du dixième du 5e centile des échantillons générés précédemment.
-		double debut = l.get(50);// 20 car 20/400 = 0.05
-		double fin = 0.05*l.get(50); 
-		double r = (debut-fin)/this.nombreIterations;
+		Temperature debut = new Temperature(1.8*l.get(50));// 20 car 20/400 = 0.05
+		Temperature fin = new Temperature(0.2*l.get(50)); 
+		double r = (debut.getValue()-fin.getValue())/this.nombreIterations;
 		this.temperatureInitiale = new ParametreT(debut , r, fin);
 	}
 	
-	public void refroidir(ParametreT temp){
-		temp.setTemperature(temp.getTemperature()-this.temperatureInitiale.getFacteurDeRefroidissement());
+	public void refroidir(Temperature temp){
+		temp.setValue(temp.getValue()-this.temperatureInitiale.getFacteurDeRefroidissement());
+	}
+	
+	public void refroidir(Temperature temp, int compteur){
+		this.refroidir(temp);
 	}
 }
