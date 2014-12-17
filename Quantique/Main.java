@@ -10,11 +10,7 @@ import recuit.*;
 
 class Main{
 	static int N =208;
-	public static Double X = 0.0;
-	public static Double Y = 0.0;
 
-	public static ArrayList<Double> coordX = new ArrayList<Double>();
-	public static ArrayList<Double> coordY = new ArrayList<Double>();
 	public static void main(String[] args) throws IOException{
 
 
@@ -41,7 +37,6 @@ class Main{
 						
 					
 						Recuit.solution(g, l,20,100,1,1);
-						excelManager.modifierCellule(i,j,Recuit.solutionNumerique);
 						System.out.println(j);
 					} 
 

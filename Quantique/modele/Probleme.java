@@ -18,7 +18,7 @@ public class Probleme extends Particule{
 		for (Etat i:this.etat){
 			compteur +=EnergiePotentielle.calculer(i);	
 		}
-		return compteur/this.etat.length;
+		return compteur/this.etat.size();
 	}
 	
 	
@@ -37,7 +37,21 @@ public class Probleme extends Particule{
 	public void setSeed(int seed){
 		this.seed=seed;
 	}
-
+	
+	public Etat getBest() {
+		Etat best = this.etat.get(0);
+		EnergiePotentielle e = best.getE();
+		double min = e.calculer(best);
+		for(Etat i : this.etat){
+			double j = e.calculer(i);
+			if(j<min){
+				best=i;
+				min =j;
+			}
+		}
+		return best;
+		
+	}
 
 
 

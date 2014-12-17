@@ -2,7 +2,11 @@ package modele;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import parametrage.EnergiePotentielleTsp;
 public class Routage extends Etat {
+	EnergiePotentielleTsp epot;
+	
 	ArrayList<Integer> route ;
 	Graphe g;
 	public ArrayList<Integer> getRoute(){
@@ -39,6 +43,11 @@ public class Routage extends Etat {
 		}
 		return clone;
 	}
+	
+	public EnergiePotentielleTsp getE(){
+		return this.epot;
+	}
+	
 	public Graphe getGraphe(){
 		return this.g;
 	}
