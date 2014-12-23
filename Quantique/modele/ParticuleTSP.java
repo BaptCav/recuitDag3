@@ -3,14 +3,17 @@ import java.util.ArrayList;
 
 import parametrage.EnergieCinetiqueTsp;
 import parametrage.EnergiePotentielleTsp;
+import parametrage.ParametreGamma;
 import parametrage.ParametreT;
+import parametrage.Ponderation;
 
 
 public class ParticuleTSP extends Probleme {
-	 ArrayList<Routage> etat;
-	public ParticuleTSP(ArrayList<Routage> r,int seed){
+	ParametreGamma gamma;
+	public ParticuleTSP(ArrayList<Etat> r,int seed,ParametreGamma gamma){
 		this.etat=r;
-		this.setSeed(seed);		
+		this.setSeed(seed);	
+		this.gamma = gamma;
 	}
 	public double calculerEnergiePotentielle(){
 		double compteur=0;
@@ -21,11 +24,12 @@ public class ParticuleTSP extends Probleme {
 	}
 	
 	public double calculerEnergie(){
-		return EnergieCinetiqueTsp.calculer(this)+this.calculerEnergiePotentielle();
+		double E = EnergieCinetiqueTsp.calculer(this,new Ponderation(this.gamma));
+		return E+this.calculerEnergiePotentielle();
 	}
 	
 	
-	public ArrayList<Routage> getRoutage(){
+	public ArrayList<Etat> getEtat(){
 		return this.etat;
 	}
 	
@@ -38,20 +42,23 @@ public class ParticuleTSP extends Probleme {
 	
 	public ParticuleTSP clone(){
 		int n = this.etat.size();
-		ArrayList<Routage> tableau = new ArrayList<Routage>(n);
-		for(int i = 0 ; i<n; i++){
-			this.etat.set(i, this.etat.get(i).clone());
+		ArrayList<Etat> r = new ArrayList<Etat>(n);
+		for(int i=0; i<n; i++){
+			r.add(((Routage) this.etat.get(i)).clone());
 		}
-		 ParticuleTSP p = new ParticuleTSP(tableau, this.getSeed()) ;
+		 ParticuleTSP p = new ParticuleTSP(r, this.getSeed(),this.gamma) ;
+		 p.setT(this.getT());
 		return p;
 		
 	}
-	public void setRoutage(ArrayList<Routage> e) {
+	public void setRoutage(ArrayList<Etat> e) {
 		// TODO Auto-generated method stub
 		this.etat=e;
 		
 	}
-	
+	public void majgamma(){
+		this.gamma.refroidissementExp();
+	}
 	
 
 }

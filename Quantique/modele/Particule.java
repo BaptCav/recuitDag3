@@ -9,6 +9,10 @@ public class Particule {
  public ParametreT getT(){
 	 return this.T;
  }
+ public void setT(ParametreT t){
+	  this.T=t;
+ }
+ 
  public ArrayList<Etat> getEtat(){
 	 return this.etat;
  }

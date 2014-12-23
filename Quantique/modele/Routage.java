@@ -5,7 +5,8 @@ import java.util.Collections;
 
 import parametrage.EnergiePotentielleTsp;
 public class Routage extends Etat {
-	EnergiePotentielleTsp epot;
+	
+	EnergiePotentielleTsp epot= new EnergiePotentielleTsp(0);
 	
 	ArrayList<Integer> route ;
 	Graphe g;
@@ -92,8 +93,9 @@ public class Routage extends Etat {
 		int[][] m = new int[n][n];
 		for(int i =0; i<n;i++){
 			for(int j=i; j<n; j++){
+				ArrayList<Integer> r= this.getRoute();
 				//met des 1 si ils sont voisins
-				if(this.getRoute().get(this.getRoute().lastIndexOf(i)+1)==j){
+				if(r.get(this.getNextIndex(this.getRoute().lastIndexOf(i)))==j){
 					m[i][j]=1;
 				}else{
 					m[i][j]=-1;

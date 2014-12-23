@@ -34,9 +34,9 @@ class Main{
 
 					for(int j=8; j<N; j++)
 					{
-						
-					
-						Recuit.solution(g, l,20,100,1,1);
+						Recuit c= new Recuit();
+						c.solution(g,20,100000,1,10);
+						excelManager.modifierCellule(i,j,c.solutionNumerique);
 						System.out.println(j);
 					} 
 
