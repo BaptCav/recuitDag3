@@ -3,7 +3,6 @@ import modele.*;
 import parametrage.*;
 import mutation.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -13,16 +12,15 @@ public class Recuit extends JFrame
 {
 	private static final long serialVersionUID = 2L;
 
-	static int nbTours = 1;
+	static int nbTours = 100;
 	static ParametreK K = new ParametreK(1);
-	//static ParametreT temperature=new ParametreT(1000,0.0001,0);
 	//static Energie listeEnergie = new ListeEnergie(false, new ArrayList<Double>(),100);
-	static NombreEnergie deltaE;
 	public static double solutionNumerique = -1;
 	static long tempsExecution = -1;
 
 
-
+	// Renvoie la possibilité que la nouvelle route soit acceptée. Elle prend en argument la différence d'energie entre les deux routes traitées dans le recuit.
+	
 	public static double probaAcceptation(NombreEnergie deltaE, Temperature temperature) throws IOException 
 	{
 	/*	listeEnergie.ajoutListe(Math.abs(deltaE.getEnergie()));
@@ -38,57 +36,61 @@ public class Recuit extends JFrame
 
 
 
-	public static Routage solution(Graphe g,ArrayList<Integer> liste, int nombreIterations) throws IOException, InterruptedException
+	public static Etat solution(Graphe g, int nombreIterations) throws IOException, InterruptedException
 	{
 	
-		//On introduit le parametreur suivant la convergence introduite en argument statique
+		//On introduit le parametreur qui définit une convergence, une temperature initiale et une temperature finale
 		Parametreur param = new ParametreurLog(g,nombreIterations);
 		int compteur =0;
+		// parametreT définit les paramètres thermiques du recuit 
 		ParametreT parametreT = param.getInitialTemperature();
 	
 		//Initialisation de la variable mutation
 		TwoOptMove mutation = new TwoOptMove(0,0);
-		// On definit une route aleatoire en premier lieu
-		Routage routage = new Routage(g);
+		NombreEnergie deltaE = new NombreEnergie(0.0);
+		// On definit une route initiale aleatoire et son energie
+		Etat routage = new Routage(g);
+		NombreEnergie EnergieCourante = routage.energie();
 		
-		// On en calcule l'energie
-		// et on dit que pour l'instant, c'est la meilleure route !
-		Routage meilleureRoute = new Routage(g);
+		// On définit la meilleure Route et son energie
+		Etat meilleureRoute = new Routage(g);
+		NombreEnergie meilleureEnergie = meilleureRoute.energie();
 		
 		int n = g.getdists().length;
 		Temperature temperatureRecuit = new Temperature(parametreT.getTemperatureDebut().getValue());
-		//double temperatureRecuit = temperature;
 
-		// On repete tant que la temperature est assez haute
+		// On repete nombreIterations fois
 		while (compteur < nombreIterations) {
-			int cptTours = 100;
+			// Pour chaque temperature, on fixe un nombre d'iterations nbTours
+			int cptTours = nbTours;
 			while(cptTours > 0)
 			{	
+				//On definit une mutation pour ce tour-ci.
 				mutation = new TwoOptMove(n);
-				deltaE= new NombreEnergie(mutation.calculer(routage));
-				
-
-				double p = probaAcceptation((NombreEnergie) deltaE, temperatureRecuit);
-				// On dÃ©cide si on accepte cette nouvelle route comme vu prÃ©cÃ©demment
+				// deltaE nous donne la difference d'energie entre la route mutee et la route courante
+				deltaE=mutation.calculer(routage);
+				// On definit la probabilite d'accepter la route mutee
+				double p = probaAcceptation(deltaE, temperatureRecuit);
+				// On decide si on accepte cette nouvelle route. Si c'est le cas, on met à jour la route et l'energie courantes
 				if (p >= Math.random()) {
 					mutation.faire(routage);
+					EnergieCourante.setEnergie(EnergieCourante.getEnergie() + deltaE.getEnergie()); 
 				}
-				
-				if (routage.getDistance() < meilleureRoute.getDistance()) {
+				// On regarde si l'energie courante ameliore la meilleure energie rencontree jusque là.
+				if (EnergieCourante.getEnergie() < meilleureEnergie.getEnergie()) {
 					meilleureRoute=routage.clone();
+					meilleureEnergie.setEnergie(EnergieCourante.getEnergie()) ;
 				}
 
 				cptTours-=1;
 			}
 			compteur++;
+			// On refroidit la variable temperatureRecuit
 			param.refroidir(temperatureRecuit,compteur);
 		}
-
-		// Lorsque l'energie cinetique n'est plus suffisante, on s'arrete et on affiche la solution trouvee
-		solutionNumerique = meilleureRoute.getDistance();
-		return meilleureRoute;
 		
-
+		solutionNumerique = meilleureRoute.energie().getEnergie();
+		return meilleureRoute;
 
 	}   
 

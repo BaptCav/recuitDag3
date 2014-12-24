@@ -1,5 +1,7 @@
 package mutation;
+import modele.Noeud;
 import modele.Routage;
+
 import java.util.Collections;
 import java.util.ArrayList;
 // LA CLASSE MUTATION N'EST PAS A UTILISER, ELLE EST ICI A TITRE INDICATIF, TELLE UNE BANQUE DE FONCTION
@@ -68,7 +70,7 @@ public class Mutation {
 		int i = 0;
 		int j = 0;
 		int k = 0;
-		ArrayList<Integer> l = new ArrayList<Integer>();
+		ArrayList<Noeud> l = new ArrayList<Noeud>();
 		while (j==k || i==k || i==j){
 			i = (int) (n * Math.random()); 
 			j = (int) (n * Math.random()); 
@@ -144,7 +146,7 @@ public class Mutation {
 		int finSequence = j;
 		//Dans l'exemple, on a finSequence=1
 		//On rentre les elements decales situes apres sequence. Dans l'exemple, on rentre 2->3
-		ArrayList<Integer> l = new ArrayList<Integer>();
+		ArrayList<Noeud> l = new ArrayList<Noeud>();
 		cpt=decalage;
 		j=this.routage.getNextIndex(j);
 		while (cpt>0){
@@ -186,7 +188,7 @@ public class Mutation {
 			cpt -=1;
 		}
 		int finSequence = j;
-		ArrayList<Integer> l = new ArrayList<Integer>();
+		ArrayList<Noeud> l = new ArrayList<Noeud>();
 		cpt=decalage;
 		j=routage.getNextIndex(j);
 		while (cpt>0){
@@ -256,10 +258,12 @@ public class Mutation {
 	public static Routage lissageFinal(Routage routage){
 		int n = routage.tailleRoute();
 		Routage clone =routage.clone();
+		TwoOptMove mutation = new TwoOptMove(0,0);
 		for( int i=0; i<n;i++){
 			System.out.println(i);
 			for(int j=0;j<n;j++){
-				TwoOptMove.faire(clone, i, j);
+				mutation = new TwoOptMove(i,j);
+				mutation.faire(clone);
 				if(clone.getDistance()<routage.getDistance()){
 					routage=clone.clone();
 					System.out.println("amélioration!"+ routage.getDistance());

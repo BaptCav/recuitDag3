@@ -2,6 +2,7 @@ package mutation;
 
 import java.util.Collections;
 
+import parametrage.NombreEnergie;
 import modele.Etat;
 import modele.Routage;
 
@@ -14,9 +15,9 @@ public class Swap implements IMutation {
 		this.j=j;
 	}
 	@Override
-	public double calculer(Etat e) {
+	public NombreEnergie calculer(Etat e) {
 		// TODO Auto-generated method stub
-		return 0;
+		return new NombreEnergie(0.0);
 	}
 
 

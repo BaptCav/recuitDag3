@@ -26,7 +26,7 @@ public class ParametreurLog extends Parametreur{
 			
 			r1=new Routage(this.g);
 			mutation = new TwoOptMove(n);
-			deltaE=mutation.calculer(r1);
+			deltaE=mutation.calculer(r1).getEnergie();
 			}
 			l.add((deltaE));
 			//On vient de générer une liste de 400 échantillons deltaE du graphe g.

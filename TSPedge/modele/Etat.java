@@ -1,5 +1,12 @@
 package modele;
 
-public class Etat {
+import parametrage.NombreEnergie;
 
+public abstract class Etat {
+
+	public abstract NombreEnergie energie();
+	
+	public abstract Etat clone();
+	
+	
 }

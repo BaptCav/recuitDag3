@@ -26,7 +26,7 @@ public class ParametreurLin extends Parametreur {
 		
 			r1=new Routage(this.g);
 			mutation = new TwoOptMove(n);
-			deltaE=mutation.calculer(r1);
+			deltaE=mutation.calculer(r1).getEnergie();
 			
 			}
 			l.add((deltaE));

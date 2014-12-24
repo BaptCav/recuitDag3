@@ -1,9 +1,9 @@
 package mutation;
 
+import parametrage.NombreEnergie;
 import modele.Etat;
-import modele.Routage;
 
 public interface IMutation {
 public void faire(Etat e);
-public double calculer(Etat e);
+public NombreEnergie calculer(Etat e);
 }

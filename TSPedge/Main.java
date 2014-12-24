@@ -1,7 +1,6 @@
 import modele.*;
 import io.*;
 
-import java.util.ArrayList;
 import java.io.*;
 
 import recuit.*;
@@ -14,25 +13,21 @@ class Main{
 		try {
 
 			ExcelManager excelManager = new ExcelManager("C:/Users/berge_pie/Desktop/BilanTSPLog.xls");
-			String fichier = "C:/Users/berge_pie/Desktop/benchmark/brazil58.tsp";
+			String fichier = "C:/Users/Pierre/Desktop/benchmark/brazil58.tsp";
 			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
-			Routage route = new Routage(g);
-			ArrayList<Integer> l = new ArrayList<Integer>();
 			
 			try
 			{
 				for(int i=44; i<45; i++){
 
 					String nomBenchmark = excelManager.lireStringCellule(i, 0).replace(" ", "");
-					fichier = "C:/Users/berge_pie/Desktop/benchmark/"+nomBenchmark+".tsp";
+					fichier = "C:/Users/Pierre/Desktop/benchmark/"+nomBenchmark+".tsp";
 					g = new Graphe(TSPParser.donneMatrice(fichier));
-					route = new Routage(g);
-					l = route.getRoute();
 					int n = g.getdists().length;
 					
 					for(int j=8; j<N; j++)
 					{
-						Recuit.solution(g, l,n*n);
+						Recuit.solution(g,n*n);
 						excelManager.modifierCellule(i,j,Recuit.solutionNumerique);
 					} 
 

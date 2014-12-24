@@ -1,18 +1,27 @@
 package modele;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import parametrage.NombreEnergie;
 public class Routage extends Etat {
-	ArrayList<Integer> route ;
+	ArrayList<Noeud> route ;
 	Graphe g;
 	
-	public Routage(ArrayList<Integer> l){
+	public Routage(ArrayList<Noeud> l){
 		this.route=l;
 	}
-	public ArrayList<Integer> getRoute(){
+	
+	public ArrayList<Noeud> getRoute(){
 		return this.route;
 	}
+	
 	public int tailleRoute() {
 		return this.route.size();
+	}
+	
+	public void setRoute(ArrayList<Noeud> l) {
+		this.route=l;
+		
 	}
 	
 	public Routage (Graphe g){
@@ -21,16 +30,16 @@ public class Routage extends Etat {
 	
 	}
 
-	public  Routage (Graphe g, ArrayList<Integer> liste){
+	public  Routage (Graphe g, ArrayList<Noeud> liste){
 		this.g=g;
 		this.route=liste;
 	}
 	
-	public ArrayList<Integer> routeInitiale() {
+	public ArrayList<Noeud> routeInitiale() {
 		int n = this.g.nombreDeNoeuds();
-		ArrayList<Integer> liste = new ArrayList<Integer>();
+		ArrayList<Noeud> liste = new ArrayList<Noeud>();
 		for (int index = 0; index < n; index++) {
-			liste.add(new Integer(index));
+			liste.add(new Noeud(index));
 		}
 		// Réorganise aléatoirement l'ordre de visite
 		Collections.shuffle(liste);	
@@ -51,7 +60,9 @@ public class Routage extends Etat {
 	public Graphe getGraphe(){
 		return this.g;
 	}
-
+  
+	// Les deux methodes suivantes servent � aller chercher le noeud suivant/precedent dans la route que l'on traite. 
+	// Elles prennent en compte le rebouclage.
 	public int getNextIndex(int index){
 		if (index==(this.tailleRoute()-1)) {
 			return 0;
@@ -74,7 +85,7 @@ public class Routage extends Etat {
 			int n = this.tailleRoute();
 			String s = "";
 			for (int index = 0; index < n; index++){
-				s += this.route.get(index).intValue() + "->";
+				s += this.route.get(index).getIndex() + "->";
 			}
 			return s;
 		}
@@ -85,15 +96,16 @@ public class Routage extends Etat {
 		int L = this.tailleRoute();
 		for(int i=0;i<L;i++){
 			j=this.getNextIndex(i);
-			cpt+=this.getGraphe().getdists()[this.getRoute().get(i)][this.getRoute().get(j)];
+			cpt+=this.getGraphe().getdists()[this.getRoute().get(i).getIndex()][this.getRoute().get(j).getIndex()];
 			
 		}
 		return cpt;
 		
 	}
-	public void setRoute(ArrayList<Integer> l) {
-		this.route=l;
-		
+	
+	// L'appel de la methode energie engendre necessairement le calcul complet de la distance de la route.
+	public NombreEnergie energie(){
+		return new NombreEnergie(this.getDistance());
 	}
 
 

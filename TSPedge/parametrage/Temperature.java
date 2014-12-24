@@ -1,6 +1,8 @@
 package parametrage;
 
 public class Temperature {
+	
+	//Une temperature est directement definie par le double qu'on lui assigne
 	double temperature;
 	
 	public Temperature(double temperature){

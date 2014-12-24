@@ -10,21 +10,19 @@ import java.util.List;
 public class ParametreurExp extends Parametreur {
 	
 	public ParametreurExp(Graphe g, int nombreIterations){
-		this.g = g;
+		Etat r1 = new Routage(g);
 		int n = g.getdists().length;
 		IMutation mutation = new TwoOptMove(0,0);
 		this.nombreIterations = nombreIterations;
-		Routage r1;
 		double deltaE = -1;
 		List<Double> l = new LinkedList<Double>();
 		for (int i =0; i < 1000; i++){
 			deltaE = -1;
 			while(deltaE<=0){
-				
 			
 			r1=new Routage(this.g);
 			mutation = new TwoOptMove(n);
-			deltaE=mutation.calculer(r1);
+			deltaE=mutation.calculer(r1).getEnergie();
 			}
 			l.add((deltaE));
 			//On vient de générer une liste de 400 échantillons deltaE du graphe g.

@@ -2,6 +2,7 @@ package mutation;
 
 import java.util.ArrayList;
 
+import parametrage.NombreEnergie;
 import modele.*;
 
 public class TwoOptMove implements IMutation {
@@ -25,34 +26,22 @@ public class TwoOptMove implements IMutation {
 		this.j = randIndex2;
 	}
 	
-	public double calculer(Etat e){
+	public NombreEnergie calculer(Etat e){
 		Routage r = (Routage) e;
 		// Cette méthode va calculer le delta engendré par la mutation
-		ArrayList<Integer> l = r.getRoute();
-		int k;
-		int n;
-		if(this.j==l.size()-1){
-			n=0;
-		}else{
-			n=this.j+1;
-		}
-		if(this.i==0){
-			k=l.size()-1;
-		}else{
-			k=this.i-1;
-		}
+		ArrayList<Noeud> l = r.getRoute();
+		
+		int k = r.getPreviousIndex(this.i);
+		int n = r.getNextIndex(this.j);
+
 		double[][]m = r.getGraphe().getdists();
-		double c1 =m[ l.get(this.i)][ l.get(k)];
-		double c2=m[ l.get(this.j)][ l.get(n)];
-		double c3=m[ l.get(this.i)][ l.get(n)];
-		double c4=m[ l.get(this.j)][ l.get(k)];
+		// Calcul des delta engendre par la creation/disparition de chaque arête
+		double c1 =m[ l.get(this.i).getIndex()][ l.get(k).getIndex()];
+		double c2=m[ l.get(this.j).getIndex()][ l.get(n).getIndex()];
+		double c3=m[ l.get(this.i).getIndex()][ l.get(n).getIndex()];
+		double c4=m[ l.get(this.j).getIndex()][ l.get(k).getIndex()];
 		
-		// Routage r2 = r.clone();
-		 //TwoOptMove.faire(r2,i,j);
-		 
-		
-		 //System.out.println((r.getDistance()-r2.getDistance()));
-		return (c4+c3-c2-c1);
+		return new NombreEnergie(c4+c3-c2-c1);
 	}
 	
 	
