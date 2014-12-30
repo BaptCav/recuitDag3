@@ -2,7 +2,9 @@ package recuit;
 import modele.*;
 import parametrage.*;
 import mutation.*;
+
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -39,8 +41,9 @@ public class Recuit extends JFrame
 	public static Etat solution(Graphe g, int nombreIterations) throws IOException, InterruptedException
 	{
 	
+		
 		//On introduit le parametreur qui définit une convergence, une temperature initiale et une temperature finale
-		Parametreur param = new ParametreurLog(g,nombreIterations);
+		Parametreur param = new ParametreurLocal(g,nombreIterations);
 		int compteur =0;
 		// parametreT définit les paramètres thermiques du recuit 
 		ParametreT parametreT = param.getInitialTemperature();
@@ -49,7 +52,8 @@ public class Recuit extends JFrame
 		TwoOptMove mutation = new TwoOptMove(0,0);
 		NombreEnergie deltaE = new NombreEnergie(0.0);
 		// On definit une route initiale aleatoire et son energie
-		Etat routage = new Routage(g);
+		// Remplacer Routage(g,int) par Routage(g) si on n'utilise pas ParametreurLocal
+		Etat routage = new Routage(g,100);
 		NombreEnergie EnergieCourante = routage.energie();
 		
 		// On définit la meilleure Route et son energie
@@ -65,6 +69,7 @@ public class Recuit extends JFrame
 			int cptTours = nbTours;
 			while(cptTours > 0)
 			{	
+				
 				//On definit une mutation pour ce tour-ci.
 				mutation = new TwoOptMove(n);
 				// deltaE nous donne la difference d'energie entre la route mutee et la route courante
@@ -76,6 +81,9 @@ public class Recuit extends JFrame
 					mutation.faire(routage);
 					EnergieCourante.setEnergie(EnergieCourante.getEnergie() + deltaE.getEnergie()); 
 				}
+				//On modifie la liste des DeltaE
+				//Mettre la ligne suivante en commentaire si on n'utilise pas ParametreurLocal
+				routage.remplacer(g,10);
 				// On regarde si l'energie courante ameliore la meilleure energie rencontree jusque là.
 				if (EnergieCourante.getEnergie() < meilleureEnergie.getEnergie()) {
 					meilleureRoute=routage.clone();
@@ -86,10 +94,11 @@ public class Recuit extends JFrame
 			}
 			compteur++;
 			// On refroidit la variable temperatureRecuit
-			param.refroidir(temperatureRecuit,compteur);
+			param.refroidir(routage,temperatureRecuit,compteur);
 		}
 		
 		solutionNumerique = meilleureRoute.energie().getEnergie();
+		System.out.println(meilleureRoute.energie().getEnergie());
 		return meilleureRoute;
 
 	}   

@@ -1,15 +1,43 @@
 package modele;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
+import mutation.IMutation;
+import mutation.TwoOptMove;
 import parametrage.NombreEnergie;
 public class Routage extends Etat {
 	ArrayList<Noeud> route ;
 	Graphe g;
+
 	
 	public Routage(ArrayList<Noeud> l){
 		this.route=l;
 	}
+	
+	//Nouveau constructeur de Routage : il construit aussi listeVoisins
+	public Routage(Graphe g, int longueurListeVoisins){
+		this.g = g;
+		this.route = routeInitiale();
+		IMutation mutation = new TwoOptMove(0,0);
+		int n = g.getdists().length;
+		double deltaE = -1;
+		List<Double> l = new LinkedList<Double>();
+		for (int i =0; i < longueurListeVoisins; i++){
+			deltaE = -1;
+			while(deltaE<=0){
+		
+			mutation = new TwoOptMove(n);
+			deltaE=mutation.calculer(this).getEnergie();
+			
+			}
+			l.add(deltaE);
+		}
+		Collections.sort(l);
+		this.listeVoisins = l;
+	}
+	
 	
 	public ArrayList<Noeud> getRoute(){
 		return this.route;
@@ -60,6 +88,7 @@ public class Routage extends Etat {
 	public Graphe getGraphe(){
 		return this.g;
 	}
+	
   
 	// Les deux methodes suivantes servent à aller chercher le noeud suivant/precedent dans la route que l'on traite. 
 	// Elles prennent en compte le rebouclage.

@@ -39,7 +39,7 @@ public class ParametreurExp extends Parametreur {
 		temp.setValue(temp.getValue()*this.temperatureInitiale.getFacteurDeRefroidissement());
 	}
 	
-	public void refroidir(Temperature temp, int compteur){
+	public void refroidir(Etat e, Temperature temp, int compteur){
 		this.refroidir(temp);
 	}
 }

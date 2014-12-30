@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import modele.Etat;
 import modele.Graphe;
 import modele.Routage;
 import mutation.IMutation;
@@ -45,7 +46,7 @@ public class ParametreurLog extends Parametreur{
 	}
 	
 	//On refroidit de manière à ce que la temperature suive la relation : Tn = c / log(alpha*n)
-	public void refroidir(Temperature temp, int compteur){
+	public void refroidir(Etat e, Temperature temp, int compteur){
 		temp.setValue(this.c/Math.log(this.alpha*(compteur+2)));
 	}
 

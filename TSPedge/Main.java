@@ -25,7 +25,7 @@ class Main{
 					g = new Graphe(TSPParser.donneMatrice(fichier));
 					int n = g.getdists().length;
 					
-					for(int j=8; j<N; j++)
+					for(int j=8; j<13; j++)
 					{
 						Recuit.solution(g,n*n);
 						excelManager.modifierCellule(i,j,Recuit.solutionNumerique);

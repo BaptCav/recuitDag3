@@ -1,6 +1,7 @@
 package parametrage;
 import modele.*;
 import mutation.*;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ParametreurLin extends Parametreur {
 		temp.setValue(temp.getValue()-this.temperatureInitiale.getFacteurDeRefroidissement());
 	}
 	
-	public void refroidir(Temperature temp, int compteur){
+	public void refroidir(Etat e, Temperature temp, int compteur){
 		this.refroidir(temp);
 	}
 }
