@@ -25,11 +25,11 @@ public class ParametreurExp extends Parametreur {
 			deltaE=mutation.calculer(r1).getEnergie();
 			}
 			l.add((deltaE));
-			//On vient de générer une liste de 400 échantillons deltaE du graphe g.
+			//On vient de gÃ©nÃ©rer une liste de 400 Ã©chantillons deltaE du graphe g.
 		}
 		Collections.sort(l);
-		//Ici, on choisit de se baser autour du dixième du 5e centile des échantillons générés précédemment.
-		Temperature debut = new Temperature(5*l.get(50));// 20 car 20/400 = 0.05
+		//Ici, on choisit de se baser autour du dixiÃ¨me du 5e centile des Ã©chantillons gÃ©nÃ©rÃ©s prÃ©cÃ©demment.
+		Temperature debut = new Temperature(5*l.get(100));
 		Temperature fin = new Temperature(0.5*l.get(50));
 		double r = Math.pow(fin.getValue()/debut.getValue(),1.0/nombreIterations);
 		this.temperatureInitiale = new ParametreT(debut , r, fin);
