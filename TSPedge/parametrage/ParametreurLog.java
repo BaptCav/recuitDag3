@@ -30,11 +30,11 @@ public class ParametreurLog extends Parametreur{
 			deltaE=mutation.calculer(r1).getEnergie();
 			}
 			l.add((deltaE));
-			//On vient de générer une liste de 400 échantillons deltaE du graphe g.
+			//On vient de gÃ©nÃ©rer une liste de 400 Ã©chantillons deltaE du graphe g.
 		}
 		Collections.sort(l);
-		//Ici, on choisit de se baser autour du dixième du 5e centile des échantillons générés précédemment.
-		Temperature debut = new Temperature(10.0*l.get(50));// 20 car 20/400 = 0.05
+		//Ici, on choisit de se baser autour du dixiÃ¨me du 5e centile des Ã©chantillons gÃ©nÃ©rÃ©s prÃ©cÃ©demment.
+		Temperature debut = new Temperature(10.0*l.get(100));
 		Temperature fin = new Temperature(l.get(50));
 		double r = Math.pow(fin.getValue()/debut.getValue(),1.0/nombreIterations);
 		this.temperatureInitiale = new ParametreT(debut , r, fin);
@@ -45,7 +45,7 @@ public class ParametreurLog extends Parametreur{
 		
 	}
 	
-	//On refroidit de manière à ce que la temperature suive la relation : Tn = c / log(alpha*n)
+	//On refroidit de maniÃ¨re Ã  ce que la temperature suive la relation : Tn = c / log(alpha*n)
 	public void refroidir(Etat e, Temperature temp, int compteur){
 		temp.setValue(this.c/Math.log(this.alpha*(compteur+2)));
 	}
