@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ParametreurLin extends Parametreur {
 	
-	//public Graphe g;//Le parametreur est universel et prend en compte les propriétés de chaque graphe.
+	//public Graphe g;//Le parametreur est universel et prend en compte les propriÃ©tÃ©s de chaque graphe.
 	//public int nombreIterations;
 	//public ParametreT temperatureInitiale;
 	
@@ -31,12 +31,12 @@ public class ParametreurLin extends Parametreur {
 			
 			}
 			l.add((deltaE));
-			//On vient de générer une liste de 400 échantillons deltaE du graphe g.
+			//On vient de gÃ©nÃ©rer une liste de 400 Ã©chantillons deltaE du graphe g.
 		}
 		Collections.sort(l);
-		//Ici, on choisit de se baser autour du dixième du 5e centile des échantillons générés précédemment.
-		Temperature debut = new Temperature(1.8*l.get(50));// 20 car 20/400 = 0.05
-		Temperature fin = new Temperature(0.2*l.get(50)); 
+		//Ici, on choisit de se baser autour du 5e centile des Ã©chantillons gÃ©nÃ©rÃ©s prÃ©cÃ©demment.
+		Temperature debut = new Temperature(2.0*l.get(100));// 20 car 20/400 = 0.05
+		Temperature fin = new Temperature(0.0); 
 		double r = (debut.getValue()-fin.getValue())/this.nombreIterations;
 		this.temperatureInitiale = new ParametreT(debut , r, fin);
 	}
