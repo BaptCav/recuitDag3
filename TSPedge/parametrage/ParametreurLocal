@@ -20,7 +20,7 @@ public class ParametreurLocal extends Parametreur {
 		List<Double> l = r1.listeVoisins;
 		int index = 5*l.size() / 100;
 		//On suit un comportement lineaire autour des l.get(index) qui varient selon la route considérée
-		temperature = new Temperature((2.0-compteur*r)*l.get(index));
+		temperature.setValue((2.0-compteur*r)*l.get(index));
 	}
 }
 
