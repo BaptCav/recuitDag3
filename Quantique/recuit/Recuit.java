@@ -4,7 +4,6 @@ import parametrage.*;
 import mutation.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import javax.swing.*;
@@ -22,7 +21,7 @@ public class Recuit extends JFrame
 
 
 	public static double probaAcceptation(double deltaE, ParametreT temperature) throws IOException 
-	{	if(deltaE<=00){
+	{	if(deltaE<=0){
 		return 1;
 	}
 	return Math.exp( (-deltaE) / (K.getK()*temperature.getTemperature()));
@@ -38,9 +37,9 @@ public class Recuit extends JFrame
 			
 			r.add(new Routage(g));
 		}
-		ParametreGamma gamma = new ParametreGamma(100000,1,0.1);
+		ParametreGamma gamma = new ParametreGamma(100000,0.00001,0.1);
 		ParticuleTSP p = new ParticuleTSP(r,seed,gamma);
-		p.setT(new ParametreT(100,0));
+		p.setT(new ParametreT(1.0,0));
 		
 		double E = p.calculerEnergie();
 		for(int i =0; i<nombreIterations;i++){
@@ -52,9 +51,10 @@ public class Recuit extends JFrame
 			 ArrayList<Etat> e2 = p2.getEtat();
 			 
 			for(int j=0;j<nombreEtat;j++){// on effectue M  fois la mutation sur chaque particule avant de descendre gamma
+				
 				Etat r1 = e.get(j);
 				Etat r2 = e2.get(j);
-
+				
 				for(int k=1; k<M; k++){
 					
 					int n = ((Routage) r1).tailleRoute();
@@ -62,19 +62,20 @@ public class Recuit extends JFrame
 					m.faire(p2,r2);
 					
 					p2.setEtat(e2);
+					
 					double E2=p2.calculerEnergie();
-					System.out.println(E2);
+					//System.out.println("Energie mutée :" + E2);
 					//VA REGARDER SI L'ON APPLIQUE LA MUTATION OU NON
 					double pr=probaAcceptation(E2-E,p.getT());
-					System.out.println(pr);
 					if(pr>Math.random()){
 						e.set(j, r2);
-						p.setEtat(e);
+						p.setEtat(e);// La particule courante est modifiée
+						E = E2;// L'energie courante est modifiée
 					}else{
+						
 						r2=r1;
 					}
 				}	
-
 
 			}
 			//UNE FOIS EFFECTUEE SUR tout les etat de la ^particule on descend gamma
@@ -86,6 +87,7 @@ public class Recuit extends JFrame
 		Routage b = (Routage)  p.getBest();
 
 		this.solutionNumerique=b.getDistance();
+		System.out.println(b.getDistance());
 		return b;
 
 	}

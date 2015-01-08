@@ -1,6 +1,7 @@
 package modele;
 import parametrage.EnergieCinetique;
 import parametrage.EnergiePotentielle;
+import parametrage.EnergiePotentielleTsp;
 
 public class Probleme extends Particule{
 
@@ -39,19 +40,19 @@ public class Probleme extends Particule{
 	}
 	
 	public Etat getBest() {
-		Etat best = this.etat.get(0);
-		EnergiePotentielle e = best.getE();
-		double min = e.calculer(best);
+		Routage best = (Routage) this.etat.get(0);
+		double min = EnergiePotentielleTsp.calculer(best);
 		for(Etat i : this.etat){
-			double j = e.calculer(i);
+			double j = EnergiePotentielleTsp.calculer((Routage)i);
 			if(j<min){
-				best=i;
+				best=(Routage) i;
 				min =j;
 			}
 		}
 		return best;
 		
 	}
+	
 
 
 

@@ -18,7 +18,7 @@ public class ParticuleTSP extends Probleme {
 	public double calculerEnergiePotentielle(){
 		double compteur=0;
 		for (Etat i:this.etat){
-			compteur +=EnergiePotentielleTsp.calculer(i);	
+			compteur +=EnergiePotentielleTsp.calculer((Routage)i);	
 		}
 		return compteur/this.etat.size();
 	}
