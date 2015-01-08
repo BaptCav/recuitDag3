@@ -39,9 +39,11 @@ public class Recuit extends JFrame
 		}
 		ParametreGamma gamma = new ParametreGamma(100000,0.00001,0.1);
 		ParticuleTSP p = new ParticuleTSP(r,seed,gamma);
+		ParticuleTSP pBest = p.clone();
 		p.setT(new ParametreT(1.0,0));
 		
 		double E = p.calculerEnergie();
+		double Ebest = E;
 		for(int i =0; i<nombreIterations;i++){
 
 			 ArrayList<Etat> e = p.getEtat();
@@ -71,6 +73,10 @@ public class Recuit extends JFrame
 						e.set(j, r2);
 						p.setEtat(e);// La particule courante est modifiée
 						E = E2;// L'energie courante est modifiée
+						if (E < Ebest){
+							pBest.setEtat(e);
+							Ebest = E;
+						}
 					}else{
 						
 						r2=r1;
@@ -84,7 +90,7 @@ public class Recuit extends JFrame
 
 
 		}
-		Routage b = (Routage)  p.getBest();
+		Routage b = (Routage)  pBest.getBest();
 
 		this.solutionNumerique=b.getDistance();
 		System.out.println(b.getDistance());
