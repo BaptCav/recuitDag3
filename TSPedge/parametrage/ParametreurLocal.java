@@ -6,21 +6,21 @@ import modele.Graphe;
 
 public class ParametreurLocal extends Parametreur {
 	
-	// temperatureinitiale est dÃ©finie nimporte comment. En fait, cette composante n'a aucune importance pour un parametreur local
+	// temperatureinitiale est définie nimporte comment. En fait, cette composante n'a aucune importance pour un parametreur local
 	public ParametreurLocal(Graphe g, int nombreIterations){
 		this.g=g;
 		this.nombreIterations = nombreIterations;
 		this.temperatureInitiale = new ParametreT(new Temperature(1.0),0.0,new Temperature(0.0));
 		
 	}
-//La temperature au temps t ne dÃ©pend plus seulement des paramÃ¨tres initiaux.
+//La temperature au temps t ne dépend plus seulement des paramètres initiaux.
 	//Elle depend aussi de la listeVoisins du routage.
 	public void refroidir(Etat r1, Temperature temperature,int compteur) {
 		double r = 2.0/nombreIterations;
 		List<Double> l = r1.listeVoisins;
 		int index = 5*l.size() / 100;
-		//On suit un comportement lineaire autour des l.get(index) qui varient selon la route considÃ©rÃ©e
-		temperature.setValue((2.0-compteur*r)*l.get(index));
+		//On suit un comportement lineaire autour des l.get(index) qui varient selon la route considérée
+		temperature = new Temperature((2.0-compteur*r)*l.get(index));
 	}
 }
 
