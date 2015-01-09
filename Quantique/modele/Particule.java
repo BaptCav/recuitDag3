@@ -1,17 +1,22 @@
 package modele;
 import java.util.ArrayList;
 
-import parametrage.ParametreT;
+import parametrage.Temperature;
 
 public class Particule {
  ArrayList<Etat> etat;
- ParametreT T;
- public ParametreT getT(){
+ Temperature T;
+ public Temperature getT(){
 	 return this.T;
  }
- public void setT(ParametreT t){
+ public void setT(Temperature t){
 	  this.T=t;
  }
+ 
+ public void setT(double value){
+	  Temperature temp = new Temperature(value);
+	  this.T = temp;
+}
  
  public ArrayList<Etat> getEtat(){
 	 return this.etat;

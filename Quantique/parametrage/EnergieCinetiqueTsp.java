@@ -22,7 +22,7 @@ public class EnergieCinetiqueTsp extends EnergieCinetique {
 			Routage r1=(Routage) r.get(i);
 			Routage r2=(Routage) r.get(i+1);
 			
-			System.out.println(r1);
+			//System.out.println(r1);
 			int[][] Mi = r1.toIsing();
 			int[][] Mj = r2.toIsing();
 			for(int k =0;k<Mi.length;k++){

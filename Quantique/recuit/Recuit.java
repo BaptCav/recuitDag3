@@ -20,27 +20,28 @@ public class Recuit extends JFrame
 
 
 
-	public static double probaAcceptation(double deltaE, ParametreT temperature) throws IOException 
+	public static double probaAcceptation(double deltaE, Temperature temperature) throws IOException 
 	{	if(deltaE<=0){
 		return 1;
 	}
-	return Math.exp( (-deltaE) / (K.getK()*temperature.getTemperature()));
+	return Math.exp( (-deltaE) / (K.getK()*temperature.getValue()));
 
 	}
 
 
 
-	public  Etat solution(Graphe g,int nombreEtat ,int nombreIterations, int seed, int M) throws IOException, InterruptedException
+	public  Etat solution(Graphe g,int nombreEtat ,int nombreIterations, int seed, int M, int tailleListeVoisins) throws IOException, InterruptedException
 	{
 		ArrayList<Etat> r = new ArrayList<Etat>(nombreEtat);
 		for(int i=0; i<nombreEtat; i++){
 			
 			r.add(new Routage(g));
 		}
-		ParametreGamma gamma = new ParametreGamma(100000,0.00001,0.1);
+		ParametreGamma gamma = new ParametreGamma(100,0.00025,0.1);
 		ParticuleTSP p = new ParticuleTSP(r,seed,gamma);
 		ParticuleTSP pBest = p.clone();
-		p.setT(new ParametreT(1.0,0));
+		
+		p.setT(1.0);
 		
 		double E = p.calculerEnergie();
 		double Ebest = E;
@@ -52,10 +53,13 @@ public class Recuit extends JFrame
 			 
 			 ArrayList<Etat> e2 = p2.getEtat();
 			 
+			 double taille = e.size();
+			 
 			for(int j=0;j<nombreEtat;j++){// on effectue M  fois la mutation sur chaque particule avant de descendre gamma
 				
 				Etat r1 = e.get(j);
 				Etat r2 = e2.get(j);
+				//p.setT(((Routage)r1).buildListeVoisins(tailleListeVoisins).get(0)/taille);//On classe 20 deltaE issus de mutations twoOptMove
 				
 				for(int k=1; k<M; k++){
 					
@@ -78,22 +82,28 @@ public class Recuit extends JFrame
 							Ebest = E;
 						}
 					}else{
-						
 						r2=r1;
 					}
-				}	
-
+				}
+				
+				
 			}
-			//UNE FOIS EFFECTUEE SUR tout les etat de la ^particule on descend gamma
+			//UNE FOIS EFFECTUEE SUR tout les etat de la particule on descend gamma
+			if (i%200 == 0){
+				System.out.println(i);
+				System.out.println("tot :" + p.calculerEnergie());
+				System.out.println("pot :" + p.calculerEnergiePotentielle());
+			}
 			p.majgamma();
 			Collections.shuffle(p.getEtat());
-
+			//if (i%100 == 0) System.out.println(p.getT().getValue());
 
 		}
 		Routage b = (Routage)  pBest.getBest();
 
 		this.solutionNumerique=b.getDistance();
-		System.out.println(b.getDistance());
+		System.out.println("result :" + 
+		b.getDistance());
 		return b;
 
 	}

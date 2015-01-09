@@ -2,6 +2,11 @@ package modele;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import mutation.IMutation;
+import mutation.TwoOptMove;
 
 import parametrage.EnergiePotentielleTsp;
 public class Routage extends Etat {
@@ -20,6 +25,29 @@ public class Routage extends Etat {
 		this.g = g;
 		this.route=routeInitiale();
 	}
+	
+	
+	//Actualise la listeVoisins et la renvoie
+		public List<Double> buildListeVoisins(int longueurListeVoisins){
+			int n = this.g.getdists().length;
+			IMutation mutation = new TwoOptMove(n);
+			Probleme p = new Probleme();
+			double deltaE = -1;
+			List<Double> l = new LinkedList<Double>();
+			for (int i =0; i < longueurListeVoisins; i++){
+				deltaE = -1;
+				while(deltaE<=0){
+			
+				mutation = new TwoOptMove(n);
+				deltaE=mutation.calculer(p,this);
+				
+				}
+				l.add(deltaE);
+			}
+			Collections.sort(l);
+			return l;
+		}
+		
 	public Routage (Graphe g, ArrayList<Integer> liste){
 		this.g=g;
 		this.route=liste;

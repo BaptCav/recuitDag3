@@ -1,11 +1,12 @@
 package modele;
 import java.util.ArrayList;
 
+
 import parametrage.EnergieCinetiqueTsp;
 import parametrage.EnergiePotentielleTsp;
 import parametrage.ParametreGamma;
-import parametrage.ParametreT;
 import parametrage.Ponderation;
+import parametrage.Temperature;
 
 
 public class ParticuleTSP extends Probleme {
@@ -34,7 +35,7 @@ public class ParticuleTSP extends Probleme {
 	}
 	
 	
-	public ParametreT getTemperature() {
+	public Temperature getTemperature() {
 		// TODO Auto-generated method stub
 		return this.getT();
 	}

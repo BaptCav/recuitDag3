@@ -17,7 +17,7 @@ class Main{
 		try {
 
 			//ExcelManager excelManager = new ExcelManager("C:/Users/cavarec_bap/Desktop/BilanTSP.xls");
-			String fichier = "C:/Users/Pierre/Desktop/benchmark/Brazil58.tsp";
+			String fichier = "C:/Users/berge_pie/Desktop/benchmark/Brazil58.tsp";
 			Graphe g = new Graphe(TSPParser.donneMatrice(fichier));
 
 			try
@@ -25,7 +25,7 @@ class Main{
 				for(int i=11; i<12; i++){
 
 					//String nomBenchmark = excelManager.lireStringCellule(i, 0).replace(" ", "");
-					fichier = "C:/Users/Pierre/Desktop/benchmark/"+"swiss42"+".tsp";
+					fichier = "C:/Users/berge_pie/Desktop/benchmark/"+"brazil58"+".tsp";
 					//Je mets ici un exemple de petit graphe. 
 					//C'est utile pour tester le comportement du recuit sur peu d'itérations avec de petites routes.
 					double[] tab1 = {0,1,4,3,4};
@@ -41,10 +41,10 @@ class Main{
 					ArrayList<Integer> l = route.getRoute();
 
 
-					for(int j=8; j<9; j++)
+					for(int j=8; j<11; j++)
 					{
 						Recuit c= new Recuit();
-						c.solution(g,3,10*42*42,1,2);
+						c.solution(g,5,10*58*58,1,2,20);
 						//excelManager.modifierCellule(i,j,c.solutionNumerique);
 						//System.out.println(j);
 					} 
