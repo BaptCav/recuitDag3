@@ -118,19 +118,23 @@ public class Routage extends Etat {
 	
 	public int[][] toIsing(){
 		int n = this.tailleRoute();
+		ArrayList<Integer> r= this.getRoute();
+		int next;
 		int[][] m = new int[n][n];
 		for(int i =0; i<n;i++){
-			for(int j=i; j<n; j++){
-				ArrayList<Integer> r= this.getRoute();
-				//met des 1 si ils sont voisins
-				if(r.get(this.getNextIndex(this.getRoute().lastIndexOf(i)))==j){
-					m[i][j]=1;
-				}else{
-					m[i][j]=-1;
-				}
-
+			next = r.get(getNextIndex(i));
+			if (i<next){
+				m[i][next]=1;
+			} else {
+				m[next][i]=1;
 			}
 		}
+		for (int k=0; k<n-1; k++){
+			for (int l=k+1; l<n; l++){
+				if (m[k][l] != 1) m[k][l] = -1;
+			}
+		}
+		
 		return m;
 
 	}
