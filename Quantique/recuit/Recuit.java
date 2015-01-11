@@ -37,15 +37,18 @@ public class Recuit extends JFrame
 			
 			r.add(new Routage(g));
 		}
-		ParametreGamma gamma = new ParametreGamma(100,0.00025,0.1);
+		Temperature temperatureDepart = ParametreurT.parametreurRecuit(g, nombreIterations);
+		ParametreGamma gamma = ParametreurGamma.parametrageGamma(g,nombreIterations,nombreEtat,temperatureDepart,10,1);
 		ParticuleTSP p = new ParticuleTSP(r,seed,gamma);
 		ParticuleTSP pBest = p.clone();
 		
-		p.setT(1.0);
-		
+		p.setT(temperatureDepart);
+		System.out.println(p.getT().getValue());
 		double E = p.calculerEnergie();
 		double Ebest = E;
 		for(int i =0; i<nombreIterations;i++){
+			
+			 E = p.calculerEnergie();
 
 			 ArrayList<Etat> e = p.getEtat();
 
@@ -102,8 +105,7 @@ public class Recuit extends JFrame
 		Routage b = (Routage)  pBest.getBest();
 
 		this.solutionNumerique=b.getDistance();
-		System.out.println("result :" + 
-		b.getDistance());
+		System.out.println("result :" + b.getDistance());
 		return b;
 
 	}
