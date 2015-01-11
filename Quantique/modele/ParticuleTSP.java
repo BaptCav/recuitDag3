@@ -2,6 +2,7 @@ package modele;
 import java.util.ArrayList;
 
 
+
 import parametrage.EnergieCinetiqueTsp;
 import parametrage.EnergiePotentielleTsp;
 import parametrage.ParametreGamma;
@@ -26,7 +27,7 @@ public class ParticuleTSP extends Probleme {
 	
 	public double calculerEnergie(){
 		double E = EnergieCinetiqueTsp.calculer(this,new Ponderation(this.gamma));
-		return E+this.calculerEnergiePotentielle();
+		return -E+this.calculerEnergiePotentielle();
 	}
 	
 	

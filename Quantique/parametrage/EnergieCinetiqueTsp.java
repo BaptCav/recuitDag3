@@ -45,6 +45,7 @@ public class EnergieCinetiqueTsp extends EnergieCinetique {
 		
 		//puis on retourne la somme des produits de spins pondérés pas la fonction de pondération
 		//System.out.println("cptspin " + compteurspinique);
+		//System.out.println("pond " + J.calcul(p.getT(),n));
 		return J.calcul(p.getT(),n)*compteurspinique;
 	}
 
