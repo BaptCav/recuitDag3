@@ -14,6 +14,10 @@ public class ParticuleTSP extends Probleme {
 	ParametreGamma gamma;
 	public ParticuleTSP(ArrayList<Etat> r,int seed,ParametreGamma gamma){
 		this.etat=r;
+		for(int i =1, i<etat.size()-1,i++){
+			etat[i].setPrevious(etat[i-1]);
+			etat[i].setPrevious(etat[i+1]);
+		}
 		this.setSeed(seed);	
 		this.gamma = gamma;
 	}
