@@ -19,4 +19,12 @@ public class Etat {
 		return this.epot;
 	}
 	
+	public void setNext(Etat e){
+		this.next=e;
+	}
+	public void setPrevious(Etat e){
+		this.previous=e;
+	}
+	
+	
 }
