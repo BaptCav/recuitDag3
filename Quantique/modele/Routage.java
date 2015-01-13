@@ -12,7 +12,8 @@ import parametrage.EnergiePotentielleTsp;
 public class Routage extends Etat {
 	
 	EnergiePotentielleTsp epot= new EnergiePotentielleTsp(0);
-	
+	Routage previous;
+	Routage next;
 	ArrayList<Integer> route ;
 	Graphe g;
 	public ArrayList<Integer> getRoute(){
@@ -58,7 +59,7 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++) {
 			liste.add(new Integer(index));
 		}
-		// Réorganise aléatoirement l'ordre de visite
+		// RÃ©organise alÃ©atoirement l'ordre de visite
 		Collections.shuffle(liste);
 		return liste;
 	}
@@ -137,6 +138,14 @@ public class Routage extends Etat {
 		
 		return m;
 
+	}
+	public void setNext(Routage r)
+	{ this.next = r;
+		
+	}
+	public void setPrevious(Routage r)
+	{ this.previous = r;
+		
 	}
 
 }
