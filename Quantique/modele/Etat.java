@@ -10,7 +10,12 @@ import parametrage.EnergiePotentielle;
 
 public class Etat {
 	
+<<<<<<< HEAD
 	int[][] ising;
+=======
+	Etat previous;
+	Etat next;// nécessaire pour implementer le recuit si l'on considere une chaine fixe
+>>>>>>> origin/master
 	
 	EnergiePotentielle epot= new EnergiePotentielle(0);
 	
@@ -18,6 +23,7 @@ public class Etat {
 		return this.epot;
 	}
 	
+<<<<<<< HEAD
 	public void setIsing(int[][] ising){
 		this.ising =ising ;
 	}
@@ -26,4 +32,14 @@ public class Etat {
 		return this.ising;
 	}
 	
+=======
+	public void setNext(Etat e){
+		this.next=e;
+	}
+	public void setPrevious(Etat e){
+		this.previous=e;
+	}
+	
+	
+>>>>>>> origin/master
 }
