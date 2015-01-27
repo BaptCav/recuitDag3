@@ -23,8 +23,8 @@ public class EnergieCinetiqueTsp extends EnergieCinetique {
 			Routage r2=(Routage) r.get(i+1);
 			
 			//System.out.println(r1);
-			int[][] Mi = r1.toIsing();
-			int[][] Mj = r2.toIsing();
+			int[][] Mi = r1.getIsing();
+			int[][] Mj = r2.getIsing();
 			for(int k =0;k<Mi.length-1;k++){
 				for(int l =k+1;l<Mi.length;l++){
 					compteurspinique+=Mi[k][l]*Mj[k][l];
@@ -35,10 +35,10 @@ public class EnergieCinetiqueTsp extends EnergieCinetique {
 		// on boucle les répliques 
 		Routage r1=(Routage) r.get(n-1);
 		Routage r2=(Routage) r.get(0);
-		int[][] Mi = r1.toIsing();
-		int[][] Mj = r2.toIsing();
+		int[][] Mi = r1.getIsing();
+		int[][] Mj = r2.getIsing();
 		for(int k =0;k<Mi.length;k++){
-			for(int l =0;l<Mi[0].length;l++){
+			for(int l =k+1;l<Mi.length;l++){
 				compteurspinique+=Mi[k][l]*Mj[k][l];
 			}
 		}	

@@ -14,12 +14,11 @@ public class ParametreurGamma {
 	// Etant donne un deltaE, le parametreur decrete qu'à la fin du recuit, une amelioration moyenne d'Ecin a la même influence qu'une amelioration deltaE/p.size() de Epot
 	// Le poids permet de faie varier linéairement l'influence d'une amelioration sur l'autre
 	public static ParametreGamma parametrageGamma(Graphe g, int nombreIterations,int nombreEtat,Temperature temp, double deltaE, int poids){
-		int n = g.getdists().length;
 		double t = temp.getValue();
-		double finGamma = n*t*argth(Math.exp(-(4*poids*deltaE)/(t*nombreEtat)));
-		double facteur = 1.0-Math.pow(1.0/1000.0,1.0/nombreIterations);
-		ParametreGamma gamma = new ParametreGamma(1000*finGamma,facteur,finGamma);
-		System.out.println(finGamma);
+		double finGamma = nombreEtat*t*argth(Math.exp(-(poids*deltaE)/(2*t*nombreEtat)));
+		double facteur = 1.0-Math.pow(0.01,1.0/nombreIterations);
+		ParametreGamma gamma = new ParametreGamma(100*finGamma,facteur,finGamma);
+		//System.out.println(finGamma);
 		return gamma;
 	}
 }

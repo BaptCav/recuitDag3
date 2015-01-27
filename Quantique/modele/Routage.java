@@ -24,6 +24,7 @@ public class Routage extends Etat {
 	public Routage (Graphe g){
 		this.g = g;
 		this.route=routeInitiale();
+		this.updateIsing();
 	}
 	
 	
@@ -51,6 +52,7 @@ public class Routage extends Etat {
 	public Routage (Graphe g, ArrayList<Integer> liste){
 		this.g=g;
 		this.route=liste;
+		this.updateIsing();
 	}
 	public ArrayList<Integer> routeInitiale() {
 		int n = this.g.nombreDeNoeuds();
@@ -70,6 +72,7 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++){
 			l.set(index, this.route.get(index));
 		}
+		clone.setIsing(this.ising);
 		return clone;
 	}
 	
@@ -116,7 +119,7 @@ public class Routage extends Etat {
 
 	//Rend la representation d'Ising du routage
 	
-	public int[][] toIsing(){
+	public int[][] updateIsing(){
 		int n = this.tailleRoute();
 		ArrayList<Integer> r= this.getRoute();
 		int next;
@@ -134,9 +137,21 @@ public class Routage extends Etat {
 				if (m[k][l] != 1) m[k][l] = -1;
 			}
 		}
-		
+		this.ising = m;
 		return m;
 
+	}
+	
+	public int distanceIsing(Routage autre){
+		int compteurspinique = 0;
+		int[][] Mi = this.getIsing();
+		int[][] Mj = autre.getIsing();
+		for(int k =0;k<Mi.length-1;k++){
+			for(int l =k+1;l<Mi.length;l++){
+				compteurspinique+=Mi[k][l]*Mj[k][l];
+			}
+		}
+		return compteurspinique;
 	}
 
 }

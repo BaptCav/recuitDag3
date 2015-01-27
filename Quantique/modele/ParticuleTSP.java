@@ -3,6 +3,9 @@ import java.util.ArrayList;
 
 
 
+
+
+import mutation.IMutation;
 import parametrage.EnergieCinetiqueTsp;
 import parametrage.EnergiePotentielleTsp;
 import parametrage.ParametreGamma;
@@ -24,6 +27,33 @@ public class ParticuleTSP extends Probleme {
 		}
 		return compteur/this.etat.size();
 	}
+	//Amelioration calculs
+	public double[] tableauDistances(){
+		int p = this.etat.size();
+		double[] tab = new double[p];
+		for (int i = 0; i < p; i++){
+			tab[i] = EnergiePotentielleTsp.calculer((Routage)this.etat.get(i));	
+		}
+		return tab;
+	}
+	
+	public double differenceSpins(int index, IMutation m){
+		Routage now = (Routage) this.getEtat().get(index);
+		Routage now2 = now.clone();
+		
+		int previous = this.getPreviousIndex(index);
+		int next = this.getNextIndex(index);
+		
+		Routage avant = (Routage) this.getEtat().get(previous);
+		Routage apres = (Routage) this.getEtat().get(next);
+		
+		m.faire(this,now2);
+		
+		int n = this.getEtat().size();
+		Ponderation J = new Ponderation(this.gamma);
+		int cptspin = now2.distanceIsing(avant) + now2.distanceIsing(apres) - now.distanceIsing(avant) - now.distanceIsing(apres);
+		return J.calcul(this.getT(),n)*cptspin;
+	}
 	
 	public double calculerEnergie(){
 		double E = EnergieCinetiqueTsp.calculer(this,new Ponderation(this.gamma));
@@ -33,6 +63,10 @@ public class ParticuleTSP extends Probleme {
 	
 	public ArrayList<Etat> getEtat(){
 		return this.etat;
+	}
+	
+	public ParametreGamma getGamma(){
+		return this.gamma;
 	}
 	
 	

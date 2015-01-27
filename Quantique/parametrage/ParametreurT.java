@@ -12,7 +12,7 @@ import mutation.TwoOptMove;
 
 public class ParametreurT {
 	
-	public static Temperature parametreurRecuit(Graphe g, int nombreIterations){
+	public static List<Double> parametreurRecuit(Graphe g, int nombreIterations){
 		int n = g.getdists().length;
 		IMutation mutation = new TwoOptMove(n);
 		Probleme p = new Probleme();
@@ -33,7 +33,7 @@ public class ParametreurT {
 		}
 		Collections.sort(l);
 		//Ici, on choisit de se baser autour du 5e centile des échantillons générés précédemment.
-		Temperature temp = new Temperature(l.get(50));
-		return temp;
+		//Temperature temp = new Temperature(l.get(30));
+		return l;
 	}
 }

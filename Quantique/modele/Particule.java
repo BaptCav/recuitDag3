@@ -24,4 +24,19 @@ public class Particule {
  public void setEtat( ArrayList<Etat> e){
 	 this.etat= e;
  }
+ 
+ public int getNextIndex(int index){
+		if (index==(this.getEtat().size()-1)) {
+			return 0;
+		} else {
+			return (index+1);
+		}
+	}
+	public int getPreviousIndex(int index){
+		if (index==0) {
+			return (this.getEtat().size() - 1);
+		} else {
+			return (index-1);
+		}
+	}
 }

@@ -23,7 +23,7 @@ public TwoOptMove(int n ){
 }
 
 
-	public void faire(Probleme p, Etat e) {
+	public Etat faire(Probleme p, Etat e) {
 		
 		Routage routage = (Routage) e;
 		int k = this.i;
@@ -39,6 +39,8 @@ public TwoOptMove(int n ){
 			l=routage.getPreviousIndex(l);
 			Swap.faire(routage,k,l);
 		}
+		routage.updateIsing();
+		return routage;
 	}
 
 	
@@ -47,7 +49,8 @@ public TwoOptMove(int n ){
 
 
 	public double calculer(Probleme p, Etat e) {
-		// Cette méthode va calculer le delta engendré par la mutation
+		// Cette méthode va calculer le delta potentiel engendré par la mutation
+		
 		Routage r = (Routage) e;
 		ArrayList<Integer> l = r.getRoute();
 		double cpt =0;
@@ -55,9 +58,7 @@ public TwoOptMove(int n ){
 		cpt-=r.getGraphe().getdists()[ l.get(this.j)][ l.get(r.getNextIndex(this.j))];
 		cpt+=r.getGraphe().getdists()[ l.get(this.i)][ l.get(r.getNextIndex(this.j))];
 		cpt+=r.getGraphe().getdists()[ l.get(this.j)][ l.get(r.getPreviousIndex(this.i))];
-
 		return cpt;
-		
 	}
 
 
