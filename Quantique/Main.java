@@ -41,7 +41,7 @@ class Main{
 					ArrayList<Integer> l = route.getRoute();
 					double result = 0;
 
-					for(int j=0; j<1; j++)
+					for(int j=0; j<5; j++)
 					{
 						Recuit c= new Recuit();
 						result += c.solution(g,5,20*58*58,1,1);

@@ -17,10 +17,6 @@ public class ParticuleTSP extends Probleme {
 	ParametreGamma gamma;
 	public ParticuleTSP(ArrayList<Etat> r,int seed,ParametreGamma gamma){
 		this.etat=r;
-		for(int i =1, i<etat.size()-1,i++){
-			etat[i].setPrevious(etat[i-1]);
-			etat[i].setPrevious(etat[i+1]);
-		}
 		this.setSeed(seed);	
 		this.gamma = gamma;
 	}
@@ -53,10 +49,18 @@ public class ParticuleTSP extends Probleme {
 		
 		m.faire(this,now2);
 		
-		int n = this.getEtat().size();
-		Ponderation J = new Ponderation(this.gamma);
+		//int n = this.getEtat().size();
+		//Ponderation J = new Ponderation(this.gamma);
 		int cptspin = now2.distanceIsing(avant) + now2.distanceIsing(apres) - now.distanceIsing(avant) - now.distanceIsing(apres);
-		return J.calcul(this.getT(),n)*cptspin;
+		return cptspin;
+	}
+	
+	public double calculerCompteurSpinique(){
+		return EnergieCinetiqueTsp.calculerCompteurSpinique(this);
+	}
+	
+	public double calculerEnergieCinetique(){
+		return -EnergieCinetiqueTsp.calculer(this,new Ponderation(this.gamma));
 	}
 	
 	public double calculerEnergie(){

@@ -11,7 +11,7 @@ import modele.Routage;
 
 public class EnergieCinetiqueTsp extends EnergieCinetique {
 	
-	public static double calculer(ParticuleTSP p, Ponderation J){
+public static double calculerCompteurSpinique(ParticuleTSP p){
 		
 		ArrayList<Etat> r = p.getEtat();
 		int n = r.size();
@@ -46,7 +46,14 @@ public class EnergieCinetiqueTsp extends EnergieCinetique {
 		//puis on retourne la somme des produits de spins pondérés pas la fonction de pondération
 		//System.out.println("cptspin " + compteurspinique);
 		//System.out.println("pond " + J.calcul(p.getT(),n));
-		return J.calcul(p.getT(),n)*compteurspinique;
+		return compteurspinique;
 	}
+	
+	public static double calculer(ParticuleTSP p, Ponderation J){
+		int n = p.getEtat().size();
+		return J.calcul(p.getT(),n)*calculerCompteurSpinique(p);
+	}
+	
+
 
 }

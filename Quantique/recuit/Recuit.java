@@ -91,14 +91,17 @@ public class Recuit extends JFrame
 		//System.out.println("Gamma :" + listeDelta.get(250));
 		
 		//double[] tableauDistances = p.tableauDistances();
-		double E = p.calculerEnergie();
-		//double Epot = p.calculerEnergiePotentielle();
+		
+		Ponderation J = new Ponderation(p.getGamma());
+		double Epot = p.calculerEnergiePotentielle();
+		double compteurSpinique = p.calculerCompteurSpinique();
+		double E = Epot-J.calcul(p.getT(), nombreEtat)*compteurSpinique;
 		double deltapot  = 0;
 		double distance = ((Routage)r.get(0)).getDistance();
 		double distanceBest = distance;
 		for(int i =0; i<nombreIterations;i++){
 			
-			 E = p.calculerEnergie();
+			 E = Epot-J.calcul(p.getT(), nombreEtat)*compteurSpinique;
 			 
 			 ArrayList<Etat> e = p.getEtat();
 
@@ -120,7 +123,7 @@ public class Recuit extends JFrame
 					m.faire(p2,r2);
 					deltapot =  ((Routage) r2).getDistance() - distance;
 					
-					double delta = deltapot/nombreEtat  -p.differenceSpins(j,m);
+					double delta = deltapot/nombreEtat  -J.calcul(p.getT(),nombreEtat)*p.differenceSpins(j,m);
 					
 					//VA REGARDER SI L'ON APPLIQUE LA MUTATION OU NON
 					double pr=probaAcceptation(delta,deltapot,p.getT());
@@ -128,6 +131,8 @@ public class Recuit extends JFrame
 						e.set(j, r2);
 						p.setEtat(e);
 						
+						Epot += deltapot/nombreEtat;
+						compteurSpinique += p.differenceSpins(j,m);
 						E += delta;// L'energie courante est modifiée
 						distance += deltapot;
 					}
@@ -141,7 +146,7 @@ public class Recuit extends JFrame
 			}
 			//UNE FOIS EFFECTUEE SUR tout les etat de la particule on descend gamma
 			p.majgamma();
-	
+			J.setGamma(p.getGamma());
 			Collections.shuffle(p.getEtat());
 
 		}
