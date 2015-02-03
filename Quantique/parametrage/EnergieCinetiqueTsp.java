@@ -1,6 +1,5 @@
 package parametrage;
 
-
 import java.util.ArrayList;
 
 import modele.Etat;
@@ -19,8 +18,9 @@ public static double calculerCompteurSpinique(ParticuleTSP p){
 		for(int i =0; i<n-1;i++){
 			//// IL reste a coder le calcul particulier
 			
-			Routage r1=(Routage) r.get(i);
-			Routage r2=(Routage) r.get(i+1);
+			Etat e = r.get(i);
+			Routage r1 = (Routage) e;
+			Routage r2 =(Routage) e.getNext();
 			
 			//System.out.println(r1);
 			int[][] Mi = r1.getIsing();
@@ -43,9 +43,6 @@ public static double calculerCompteurSpinique(ParticuleTSP p){
 			}
 		}	
 		
-		//puis on retourne la somme des produits de spins pondérés pas la fonction de pondération
-		//System.out.println("cptspin " + compteurspinique);
-		//System.out.println("pond " + J.calcul(p.getT(),n));
 		return compteurspinique;
 	}
 	

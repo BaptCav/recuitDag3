@@ -10,6 +10,9 @@ import parametrage.EnergiePotentielle;
 
 public class Etat {
 	
+	Etat previous;
+	Etat next;
+	
 	int[][] ising;
 	
 	EnergiePotentielle epot= new EnergiePotentielle(0);
@@ -24,6 +27,23 @@ public class Etat {
 	
 	public int[][] getIsing(){
 		return this.ising;
+	}
+
+	public void setprevious(Etat etat) {
+		this.previous=etat;
+		
+	}
+
+	public void setnext(Etat etat) {
+		this.next=etat;		
+	}
+	
+	
+	public Etat getNext(){
+		return this.next;
+	}
+	public Etat getPrevious(){
+		return this.previous;
 	}
 	
 }

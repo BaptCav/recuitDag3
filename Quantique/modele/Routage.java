@@ -10,9 +10,13 @@ import mutation.TwoOptMove;
 
 import parametrage.EnergiePotentielleTsp;
 public class Routage extends Etat {
-	
+
+
+
+
+
 	EnergiePotentielleTsp epot= new EnergiePotentielleTsp(0);
-	
+
 	ArrayList<Integer> route ;
 	Graphe g;
 	public ArrayList<Integer> getRoute(){
@@ -26,29 +30,29 @@ public class Routage extends Etat {
 		this.route=routeInitiale();
 		this.updateIsing();
 	}
-	
-	
+
+
 	//Actualise la listeVoisins et la renvoie
-		public List<Double> buildListeVoisins(int longueurListeVoisins){
-			int n = this.g.getdists().length;
-			IMutation mutation = new TwoOptMove(n);
-			Probleme p = new Probleme();
-			double deltaE = -1;
-			List<Double> l = new LinkedList<Double>();
-			for (int i =0; i < longueurListeVoisins; i++){
-				deltaE = -1;
-				while(deltaE<=0){
-			
+	public List<Double> buildListeVoisins(int longueurListeVoisins){
+		int n = this.g.getdists().length;
+		IMutation mutation = new TwoOptMove(n);
+		Probleme p = new Probleme();
+		double deltaE = -1;
+		List<Double> l = new LinkedList<Double>();
+		for (int i =0; i < longueurListeVoisins; i++){
+			deltaE = -1;
+			while(deltaE<=0){
+
 				mutation = new TwoOptMove(n);
 				deltaE=mutation.calculer(p,this);
-				
-				}
-				l.add(deltaE);
+
 			}
-			Collections.sort(l);
-			return l;
+			l.add(deltaE);
 		}
-		
+		Collections.sort(l);
+		return l;
+	}
+
 	public Routage (Graphe g, ArrayList<Integer> liste){
 		this.g=g;
 		this.route=liste;
@@ -75,11 +79,11 @@ public class Routage extends Etat {
 		clone.setIsing(this.ising);
 		return clone;
 	}
-	
+
 	public EnergiePotentielleTsp getE(){
 		return this.epot;
 	}
-	
+
 	public Graphe getGraphe(){
 		return this.g;
 	}
@@ -105,6 +109,7 @@ public class Routage extends Etat {
 		}
 		return s;
 	}
+
 	public double getDistance(){
 		double cpt=0.0;
 		int j=0;
@@ -118,20 +123,45 @@ public class Routage extends Etat {
 
 
 	//Rend la representation d'Ising du routage
-	
+
+	//Renvoie la valeur d'Ising pour deux noeuds fournis
+	public int valueIsing(int i, int j){
+		if (i<j) return this.ising[i][j];
+		if (j<i) return this.ising[j][i];
+		return 0;
+	}
+
+	//Cette fonction met à jour la matrice d'Ising en connectant les noeuds i et j. Condition : i != j
+	public void connect(int i, int j){
+		if (i<j) this.ising[i][j] = 1;
+		if (j<i) this.ising[j][i] = 1;
+	}
+
+	//Fonction disconnect
+	public void disconnect(int i, int j){ 
+		if (i<j) this.ising[i][j] = -1;
+		if (j<i) this.ising[j][i] = -1;
+	}
+
+	//Mise à jour de la matrice d'Ising et renvoi de cette matrice
 	public int[][] updateIsing(){
 		int n = this.tailleRoute();
 		ArrayList<Integer> r= this.getRoute();
+		int now;
 		int next;
 		int[][] m = new int[n][n];
+
+		//On passe à 1 les noeuds lies entre eux
 		for(int i =0; i<n;i++){
+			now= r.get(i);
 			next = r.get(getNextIndex(i));
-			if (i<next){
-				m[i][next]=1;
+			if (now<next){
+				m[now][next]=1;
 			} else {
-				m[next][i]=1;
+				m[next][now]=1;
 			}
 		}
+		//S'ils ne sont pas lies dans la route, on met -1
 		for (int k=0; k<n-1; k++){
 			for (int l=k+1; l<n; l++){
 				if (m[k][l] != 1) m[k][l] = -1;
@@ -141,7 +171,8 @@ public class Routage extends Etat {
 		return m;
 
 	}
-	
+
+	//Calcule le produit spinique entre deux matrices d'Ising
 	public int distanceIsing(Routage autre){
 		int compteurspinique = 0;
 		int[][] Mi = this.getIsing();
@@ -153,5 +184,29 @@ public class Routage extends Etat {
 		}
 		return compteurspinique;
 	}
+
+	//Affiche le pourcentage de similarite entre 2 routes. Si on renvoie 100, elles sont complètement similaires. Si on renvoie 0, elles sont complètement differentes.
+	public int pourcentageSimilarite(Routage autre){
+		int n = this.tailleRoute();
+		int rapprochement = this.distanceIsing(autre);
+		int limitesup = n*(n-1)/2;
+		int limiteinf = n*(n-9)/2;
+		int differenceTotale = limitesup - limiteinf;
+		int difference = rapprochement - limiteinf;
+		return ((difference*100)/differenceTotale);
+	}
+
+	//Affiche la matrice d'Ising de la route. Utile pour vérifications
+	public void afficheIsing(){
+		int[][] M = this.getIsing();
+		for(int k =0;k<M.length;k++){
+			for(int l =0;l<M.length;l++){
+				System.out.print(M[k][l] + " , ");
+			}
+			System.out.println("");
+		}
+	}
+
+
 
 }

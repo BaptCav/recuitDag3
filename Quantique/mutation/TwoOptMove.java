@@ -2,6 +2,8 @@ package mutation;
 
 import java.util.ArrayList;
 
+import parametrage.NombreEnergie;
+
 import modele.*;
 
 public class TwoOptMove implements IMutation {
@@ -22,10 +24,32 @@ public TwoOptMove(int n ){
 
 }
 
+public int getI(){
+	return this.i;
+}
+
+public int getJ(){
+	return this.j;
+}
 
 	public Etat faire(Probleme p, Etat e) {
 		
 		Routage routage = (Routage) e;
+		//Mise à jour d'Ising
+		int NodeI  = routage.getRoute().get(this.i);
+		int NodeBeforeI = routage.getRoute().get(routage.getPreviousIndex(this.i));
+		int NodeJ = routage.getRoute().get(this.j);
+		int NodeAfterJ = routage.getRoute().get(routage.getNextIndex(this.j));
+		
+		//On modifie les spins concernes. La condition elimine un cas où twoOptMove ne modifie rien.
+		if(routage.getNextIndex(this.j)!=this.i){
+				routage.disconnect(NodeBeforeI, NodeI);
+				routage.disconnect(NodeAfterJ, NodeJ);
+				routage.connect(NodeBeforeI, NodeJ);
+				routage.connect(NodeAfterJ, NodeI);
+			}
+		
+		//Mutation sur la liste de noeuds
 		int k = this.i;
 		int l = this.j;
 		
@@ -39,7 +63,7 @@ public TwoOptMove(int n ){
 			l=routage.getPreviousIndex(l);
 			Swap.faire(routage,k,l);
 		}
-		routage.updateIsing();
+		//routage.updateIsing();
 		return routage;
 	}
 
@@ -51,13 +75,21 @@ public TwoOptMove(int n ){
 	public double calculer(Probleme p, Etat e) {
 		// Cette méthode va calculer le delta potentiel engendré par la mutation
 		
+		
 		Routage r = (Routage) e;
 		ArrayList<Integer> l = r.getRoute();
 		double cpt =0;
+		if (r.getPreviousIndex(this.i)!=this.j){
 		cpt-=r.getGraphe().getdists()[ l.get(this.i)][ l.get(r.getPreviousIndex(this.i))];
+		//System.out.println("avanti - i: " + r.getGraphe().getdists()[ l.get(this.i)][ l.get(r.getPreviousIndex(this.i))]);
 		cpt-=r.getGraphe().getdists()[ l.get(this.j)][ l.get(r.getNextIndex(this.j))];
+		//System.out.println("j - apresj: " + r.getGraphe().getdists()[ l.get(this.j)][ l.get(r.getNextIndex(this.j))]);
 		cpt+=r.getGraphe().getdists()[ l.get(this.i)][ l.get(r.getNextIndex(this.j))];
+		//System.out.println("i - apresj: " + r.getGraphe().getdists()[ l.get(this.i)][ l.get(r.getNextIndex(this.j))]);
 		cpt+=r.getGraphe().getdists()[ l.get(this.j)][ l.get(r.getPreviousIndex(this.i))];
+		//System.out.println("avanti - j: " +r.getGraphe().getdists()[ l.get(this.j)][ l.get(r.getPreviousIndex(this.i))]);
+		return cpt;
+		}
 		return cpt;
 	}
 

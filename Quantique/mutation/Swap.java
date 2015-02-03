@@ -32,11 +32,7 @@ public class Swap implements IMutation {
 		
 	}
 
-	@Override
-	public void faire(Probleme p, Etat e) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public double calculer(Probleme p) {

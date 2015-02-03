@@ -11,10 +11,9 @@ public class Writer {
 	
 	public static void ecriture (int compteur, double nombre, PrintWriter printWriter) throws IOException{
 		
-		printWriter.print(compteur);
-		printWriter.print("\t");
 		printWriter.print(nombre);
 		printWriter.println();
+		
 
 	}
 	
