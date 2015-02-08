@@ -1,3 +1,4 @@
+package parametrage;
 
 public class ParametreK {
 

@@ -1,3 +1,5 @@
+package parametrage;
+
 
 public abstract class Energie {
 

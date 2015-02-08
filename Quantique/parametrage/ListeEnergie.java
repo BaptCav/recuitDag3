@@ -1,3 +1,4 @@
+package parametrage;
 import java.util.ArrayList;
 
 
@@ -14,19 +15,19 @@ public class ListeEnergie extends Energie {
 	}
 
 	public boolean isMovingAverage() {
-		return movingAverage;
+		return this.movingAverage;
 	}
 
 	public void setMovingAverage(boolean bool) {
-		movingAverage = bool;
+		this.movingAverage = bool;
 	}
 
 	public ArrayList<Double> getDeltaE() {
-		return deltaEnergie;
+		return this.deltaEnergie;
 	}
 
 	public void setDeltaE(ArrayList<Double> deltaE) {
-		deltaEnergie = deltaE;
+		this.deltaEnergie = deltaE;
 	}
 	
 	public void ajoutListe(double e){
@@ -42,12 +43,12 @@ public class ListeEnergie extends Energie {
 				somme = somme + this.deltaEnergie.get(i-1);
 
 			}
-			return somme/(fenetre*fenetre);
+			return somme/(this.fenetre*this.fenetre);
 		
 	}
 
 	public int getFenetre() {
-		return fenetre;
+		return this.fenetre;
 	}
 
 	public void setFenetre(int fenetre) {

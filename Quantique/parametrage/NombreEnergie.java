@@ -1,3 +1,4 @@
+package parametrage;
 
 public class NombreEnergie extends Energie{
 
@@ -7,7 +8,7 @@ public class NombreEnergie extends Energie{
 		this.nombreEnergie = e;
 	}
 	public double getEnergie() {
-		return nombreEnergie;
+		return this.nombreEnergie;
 	}
 
 	public void setEnergie(double nombreEnergie) {

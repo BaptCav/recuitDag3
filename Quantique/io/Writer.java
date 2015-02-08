@@ -1,3 +1,4 @@
+package io;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,9 +10,6 @@ public class Writer {
 	public static PrintWriter proba;
 	
 	public static void ecriture (int compteur, double nombre, PrintWriter printWriter) throws IOException{
-		
-		printWriter.print(compteur);
-		printWriter.print("\t");
 		printWriter.print(nombre);
 		printWriter.println();
 
