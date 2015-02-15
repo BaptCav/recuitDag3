@@ -64,7 +64,7 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++) {
 			liste.add(new Integer(index));
 		}
-		// Réorganise aléatoirement l'ordre de visite
+		// RÃ©organise alÃ©atoirement l'ordre de visite
 		Collections.shuffle(liste);
 		return liste;
 	}
@@ -76,7 +76,13 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++){
 			l.set(index, this.route.get(index));
 		}
-		clone.setIsing(this.ising);
+		int[][] m = new int[n][n];
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				m[i][j] = this.ising[i][j];
+			}
+		}
+		clone.setIsing(m);
 		return clone;
 	}
 
@@ -131,7 +137,7 @@ public class Routage extends Etat {
 		return 0;
 	}
 
-	//Cette fonction met à jour la matrice d'Ising en connectant les noeuds i et j. Condition : i != j
+	//Cette fonction met Ã  jour la matrice d'Ising en connectant les noeuds i et j. Condition : i != j
 	public void connect(int i, int j){
 		if (i<j) this.ising[i][j] = 1;
 		if (j<i) this.ising[j][i] = 1;
@@ -143,7 +149,7 @@ public class Routage extends Etat {
 		if (j<i) this.ising[j][i] = -1;
 	}
 
-	//Mise à jour de la matrice d'Ising et renvoi de cette matrice
+	//Mise Ã  jour de la matrice d'Ising et renvoi de cette matrice
 	public int[][] updateIsing(){
 		int n = this.tailleRoute();
 		ArrayList<Integer> r= this.getRoute();
@@ -151,7 +157,7 @@ public class Routage extends Etat {
 		int next;
 		int[][] m = new int[n][n];
 
-		//On passe à 1 les noeuds lies entre eux
+		//On passe Ã  1 les noeuds lies entre eux
 		for(int i =0; i<n;i++){
 			now= r.get(i);
 			next = r.get(getNextIndex(i));
@@ -185,7 +191,7 @@ public class Routage extends Etat {
 		return compteurspinique;
 	}
 
-	//Affiche le pourcentage de similarite entre 2 routes. Si on renvoie 100, elles sont complètement similaires. Si on renvoie 0, elles sont complètement differentes.
+	//Affiche le pourcentage de similarite entre 2 routes. Si on renvoie 100, elles sont complÃ¨tement similaires. Si on renvoie 0, elles sont complÃ¨tement differentes.
 	public int pourcentageSimilarite(Routage autre){
 		int n = this.tailleRoute();
 		int rapprochement = this.distanceIsing(autre);
@@ -196,7 +202,7 @@ public class Routage extends Etat {
 		return ((difference*100)/differenceTotale);
 	}
 
-	//Affiche la matrice d'Ising de la route. Utile pour vérifications
+	//Affiche la matrice d'Ising de la route. Utile pour vÃ©rifications
 	public void afficheIsing(){
 		int[][] M = this.getIsing();
 		for(int k =0;k<M.length;k++){
