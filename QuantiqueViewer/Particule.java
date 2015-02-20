@@ -69,6 +69,59 @@ public class Particule {
 		return sum;
 	}
 	
+	public double distanceToBest(int[][] matrice, int index){
+		int coordX1 = findBest(matrice).getCoordonneesX();
+		int coordY1 = findBest(matrice).getCoordonneesY();
+		double distance = Math.sqrt(Math.pow(etats.get(index).getCoordonneesX()-coordX1,2)+Math.pow(etats.get(index).getCoordonneesY()-coordY1,2));
+		return distance;
+	}
+	
+	public Etat findBest(int[][] matrice){
+		int[] tableau = new int[this.getEtats().size()];
+		for(int i=0; i<this.getEtats().size();i++)
+		{
+			tableau[i] = matrice[this.getEtats().get(i).getCoordonneesX()][this.getEtats().get(i).getCoordonneesY()];
+		}
+		int indexMin = smallestIndex(tableau);
+		//System.out.println("The indexMin is: "+ indexMin);
+		return this.getEtats().get(indexMin);
+	}
+	
+	public static int smallestIndex (int[] array) {
+		int currentValue = array[0];
+		int smallestIndex = 0;
+		for (int j=1; j < array.length; j++) {
+			if (array[j] < currentValue)
+			{
+				currentValue = array[j];
+				smallestIndex = j;
+			}
+		}
+		return smallestIndex;
+	}
+	
+	public double GetEp()
+	{
+		double energiePotentielle = 0;
+		for(int i=0; i<this.getEtats().size();i++)
+		{
+			energiePotentielle += this.getEtats().get(i).getEnergiePotentielle();
+		}
+		energiePotentielle = energiePotentielle/(getEtats().size());
+		return energiePotentielle;
+	}
+	
+	public double GetEc()
+	{
+		double energieCinetique = 0;
+		for(int i=0; i<this.getEtats().size();i++)
+		{
+			energieCinetique += this.getEtats().get(i).getEnergieCinetique();
+		}
+		energieCinetique = energieCinetique/(getEtats().size());
+		return energieCinetique;
+	}
+	
 	public ArrayList<Etat> getEtats()
 	{
 		return etats;
