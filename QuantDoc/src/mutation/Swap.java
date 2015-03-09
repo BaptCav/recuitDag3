@@ -48,6 +48,20 @@ public class Swap implements IMutation {
 	}
 
 
+	@Override
+	public Etat faire(Probleme p, Etat e) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void maj() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 
 }

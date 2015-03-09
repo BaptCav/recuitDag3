@@ -7,4 +7,5 @@ public void faire(Probleme p);
 public double calculer(Probleme p);
 public Etat faire(Probleme p, Etat e);
 public double calculer(Probleme p, Etat e);
+public void maj();
 }

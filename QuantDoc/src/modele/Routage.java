@@ -15,10 +15,12 @@ public class Routage extends Etat {
 
 
 
-	EnergiePotentielleTsp epot= new EnergiePotentielleTsp(0);
+	EnergiePotentielleTsp epot= new EnergiePotentielleTsp();
 
 	ArrayList<Integer> route ;
+	private int taille;
 	Graphe g;
+	int[][] ising;
 	public ArrayList<Integer> getRoute(){
 		return this.route;
 	}
@@ -29,29 +31,16 @@ public class Routage extends Etat {
 		this.g = g;
 		this.route=routeInitiale();
 		this.updateIsing();
+		this.taille=route.size();
+	}
+	public void setIsing(int[][] ising){
+		this.ising =ising ;
 	}
 
-
-	//Actualise la listeVoisins et la renvoie
-	public List<Double> buildListeVoisins(int longueurListeVoisins){
-		int n = this.g.getdists().length;
-		IMutation mutation = new TwoOptMove(n);
-		Probleme p = new Probleme();
-		double deltaE = -1;
-		List<Double> l = new LinkedList<Double>();
-		for (int i =0; i < longueurListeVoisins; i++){
-			deltaE = -1;
-			while(deltaE<=0){
-
-				mutation = new TwoOptMove(n);
-				deltaE=mutation.calculer(p,this);
-
-			}
-			l.add(deltaE);
-		}
-		Collections.sort(l);
-		return l;
+	public int[][] getIsing(){
+		return this.ising;
 	}
+
 
 	public Routage (Graphe g, ArrayList<Integer> liste){
 		this.g=g;
@@ -76,7 +65,15 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++){
 			l.set(index, this.route.get(index));
 		}
-		clone.setIsing(this.ising);
+
+		// On clone la matrice d'Ising
+		int[][] m = new int[n][n];
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				m[i][j] = this.ising[i][j];
+			}
+		}
+		clone.setIsing(m);
 		return clone;
 	}
 
@@ -110,7 +107,7 @@ public class Routage extends Etat {
 		return s;
 	}
 
-	public double getDistance(){
+	public double getEnergie(){
 		double cpt=0.0;
 		int j=0;
 		int L = this.tailleRoute();
@@ -205,6 +202,10 @@ public class Routage extends Etat {
 			}
 			System.out.println("");
 		}
+	}
+
+	public int getTaille(){
+		return this.taille;
 	}
 
 

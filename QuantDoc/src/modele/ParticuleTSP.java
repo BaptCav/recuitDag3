@@ -6,9 +6,13 @@ import java.util.ArrayList;
 
 
 
+
+
 import mutation.IMutation;
 import mutation.TwoOptMove;
+import parametrage.EnergieCinetique;
 import parametrage.EnergieCinetiqueTsp;
+import parametrage.EnergiePotentielle;
 import parametrage.EnergiePotentielleTsp;
 import parametrage.ParametreGamma;
 import parametrage.Ponderation;
@@ -16,17 +20,26 @@ import parametrage.Temperature;
 
 
 public class ParticuleTSP extends Probleme {
-	ParametreGamma gamma;
+	Graphe g;
 	
-	public ParticuleTSP(int value){
-		
+	public ParticuleTSP(Graphe g, ArrayList<Etat> etat){
+		/**
+		 * le constructeur initial les autres valeurs sont "setables"
+		 */
+	this.g=g;
+	this.etat=etat;
 	}
 	
-	public ParticuleTSP(ArrayList<Etat> r,int seed,ParametreGamma gamma){
-		this.setEtat(r);
-		this.setSeed(seed);	
-		this.gamma = gamma;
+	public ParticuleTSP(Graphe g, ArrayList<Etat> etat,Temperature T,int seed,EnergieCinetiqueTsp energiecin,EnergiePotentielleTsp energiepot,ParametreGamma gamma){
+		super(etat,T,seed,energiecin,energiepot,gamma);
+		this.g=g;
 	}
+	
+	public Graphe getGraphe(){
+		return this.g;
+	}
+	
+	
 	public double calculerEnergiePotentielle(){
 		double compteur=0;
 		for (Etat i:this.etat){
@@ -44,31 +57,21 @@ public class ParticuleTSP extends Probleme {
 		return tab;
 	}
 	 //Universel mais ne marche pas, à corriger
-	public double differenceSpins(int index, IMutation m){
-		Routage now = (Routage) this.getEtat().get(index);
-		Routage now2 = now.clone();
-		
-		Routage avant = (Routage) this.getEtat().get(index).getPrevious();
-		Routage apres = (Routage) this.getEtat().get(index).getNext();
-		
-		m.faire(this,now2);
-		
-		int cptspin = now2.distanceIsing(avant) + now2.distanceIsing(apres) - now.distanceIsing(avant) - now.distanceIsing(apres);
-		return cptspin;
-	}
+
 	
 	//Moins de calcul que la methode precedente
-	public double differenceSpinsTwoOpt(int index,TwoOptMove m){
+	public double differenceSpins(Etat e,TwoOptMove m){
 		int cptspin = 0;
 		int i = m.getI();
 		int j = m.getJ();
 		
-		Routage now = (Routage) this.getEtat().get(index);
+		Routage now = (Routage) e;
 		
 		
 		//Routes concernees, voisines de index dans la particule
-		Routage avant = (Routage) this.getEtat().get(index).getPrevious();
-		Routage apres = (Routage) this.getEtat().get(index).getNext();
+		Routage avant = (Routage) e.getPrevious();
+		Routage apres = (Routage) e.getNext();
+		
 		
 		int NodeI  = now.getRoute().get(i);
 		int NodeBeforeI = now.getRoute().get(now.getPreviousIndex(i));
@@ -94,22 +97,17 @@ public class ParticuleTSP extends Probleme {
 	
 	//Calcul Ecin
 	public double calculerEnergieCinetique(){
-		return -EnergieCinetiqueTsp.calculer(this,new Ponderation(this.gamma));
+		return this.calculerCompteurSpinique();
 	}
 	
-	public double calculerEnergie(){
-		double E = EnergieCinetiqueTsp.calculer(this,new Ponderation(this.gamma));
-		return -E+this.calculerEnergiePotentielle();
-	}
+
 	
 	
 	public ArrayList<Etat> getEtat(){
 		return this.etat;
 	}
 	
-	public ParametreGamma getGamma(){
-		return this.gamma;
-	}
+	
 	
 	
 	public Temperature getTemperature() {
@@ -124,7 +122,7 @@ public class ParticuleTSP extends Probleme {
 		for(int i=0; i<n; i++){
 			r.add(((Routage) this.etat.get(i)).clone());
 		}
-		 ParticuleTSP p = new ParticuleTSP(r, this.getSeed(),this.gamma) ;
+		 ParticuleTSP p = new ParticuleTSP(this.g,r,this.getT(), this.getSeed(),(EnergieCinetiqueTsp) this.getEcin(),(EnergiePotentielleTsp) this.getEpot(),this.getGamma()) ;
 		 p.setT(this.getT());
 		return p;
 		
@@ -134,9 +132,7 @@ public class ParticuleTSP extends Probleme {
 		this.setEtat(e);
 		
 	}
-	public void majgamma(){
-		this.gamma.refroidissementExp();
+	public Etat creeEtatAleatoire(){
+		return new Routage(this.g);
 	}
-	
-
 }
