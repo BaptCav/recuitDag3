@@ -52,7 +52,7 @@ public class ParametreGamma {
 	
 	/**
 	 * Permet d'établir la nouvelle valeur finale de Gamma
-	 * @param temperature
+	 * @param gammafin
 	 * Nouvelle valeur finale de Gamma
 	 */
 	public void setGammaFin(double gammafin){
@@ -83,7 +83,7 @@ public class ParametreGamma {
 
 	/**
 	 * Permet d'établir le nouveau facteur de décroissance de Gamma
-	 * @param temperature
+	 * @param facteurDeRefroidissement
 	 * Nouveau facteur de décroissance de Gamma
 	 */
 	public void setFacteur(double facteurDeRefroidissement) {

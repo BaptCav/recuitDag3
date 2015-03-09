@@ -4,11 +4,20 @@ import java.util.ArrayList;
 
 import modele.*;
 
+/**
+ * Mutation 2-opt pour TSP
+ * @author Pierre
+ */
 public class TwoOptMove implements IMutation {
 	int taille;
 	int i;
 	int j;
 
+	/**
+	 * Construit une mutation 2-opt aléatoire
+	 * @param r
+	 * Route sur laquelle on veut muter
+	 */
 	public TwoOptMove(Routage r){
 		this.taille = r.getTaille();
 		int randIndex1 = 0;//Indice du noeud c2
@@ -22,14 +31,31 @@ public class TwoOptMove implements IMutation {
 		this.j = randIndex2;
 	}
 
+	/**
+	 * @return
+	 * Retourne l'indice I du 2-opt
+	 */
 	public int getI(){
 		return this.i;
 	}
 
+	/**
+	 * @return
+	 * Retourne l'indice J du 2-opt
+	 */
 	public int getJ(){
 		return this.j;
 	}
 
+	/**
+	 * Fait la mutation 2-opt sur un Routage et modifie sa matrice d'Ising
+	 * @param p
+	 * Probleme considéré
+	 * @param e
+	 * Etat sur lequel on mute
+	 * @return 
+	 * Nouvel état après mutation 2-opt
+	 */
 	public Etat faire(Probleme p, Etat e) {
 
 		Routage routage = (Routage) e;
@@ -70,6 +96,7 @@ public class TwoOptMove implements IMutation {
 
 
 
+
 	public double calculer(Probleme p, Etat e) {
 		// Cette méthode va calculer le delta potentiel engendré par la mutation
 
@@ -103,10 +130,6 @@ public class TwoOptMove implements IMutation {
 
 	}
 	public void maj(){
-
-		/**
-		 * Cette methode vise a mettre a jour les parametres de la mutation sans pour autant la recreer
-		 */
 		int randIndex1 = 0;//Indice du noeud c2
 		int randIndex2 = 0;//Indice du noeud c1'
 		//  On recalcule les indices de c2 et c1' jusqu'Ã  ce que c2 soit diffÃ©rent de c1'.Notons que le cas c2=c1' ne change pas la route.
