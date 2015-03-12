@@ -2,42 +2,71 @@ package modele;
 import java.util.ArrayList;
 
 import parametrage.Temperature;
-
+/**
+ * 
+ * @author BaptCav
+ *
+ */
 public class Particule {
 	ArrayList<Etat> etat;
 	Temperature T;
 	
+	/**
+	 * Le Constructeur s'occupe du bouclage de la chaine d'etat lui meme
+	 */
+	
 	public Particule(ArrayList<Etat> etat,Temperature T){
-		/**
-		 * Le Constructeur s'occupe du bouclage lui meme
-		 */
-		
+	
 		this.setEtat(etat);
 		this.T=T;
 	}
 	public Particule(){
 		
 	}
-	
+	/**
+	 * 
+	 * @return
+	 * La température (fixe) de la particule
+	 */
 	public Temperature getT(){
 		return this.T;
 	}
+	/**
+	 * 
+	 * @param t
+	 * 	va fixer la température de la particule a partir de la classe Temperature
+	 */
 	public void setT(Temperature t){
 		this.T=t;
 	}
-
+	/**
+	 * 
+	 * @param value
+	 * va fixer la température de la particule a partir d'un double
+	 */
 	public void setT(double value){
 		Temperature temp = new Temperature(value);
 		this.T = temp;
 	}
-
+	/**
+	 * 
+	 * @return
+	 * la liste des états composant la particule
+	 */
 	public ArrayList<Etat> getEtat(){
 		return this.etat;
 	}
+	/**
+	 * 
+	 * @return
+	 * le nombre d'etats total
+	 */
 	public int nombreEtat(){
 		return etat.size();
 	}
-	
+	/**
+	 * Clone la particule 
+	 */
 	public Particule clone(){
 		int n = this.etat.size();
 		ArrayList<Etat> r = new ArrayList<Etat>(n);
@@ -49,7 +78,10 @@ public class Particule {
 		return p;
 		
 	}
-	
+	/**
+	 * Set la liste d'etats en effectuant le bouclage au passage
+	 * @param e
+	 */
 	public void setEtat( ArrayList<Etat> e){
 		this.etat= e;
 		for( int i =1;i< e.size()-1; i++){
@@ -61,7 +93,12 @@ public class Particule {
 		e.get(0).setprevious( e.get(e.size()-1));
 		e.get(0).setnext(e.get(1));
 	}
-
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 * i+1 dans la boucle cad (i+1)%Nombreetat
+	 */
 	public int getNextIndex(int index){
 		if (index==(this.getEtat().size()-1)) {
 			return 0;
@@ -69,7 +106,12 @@ public class Particule {
 			return (index+1);
 		}
 	}
-
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 * i-1 dans la boucle cad (i-1)%Nombreetat
+	 */
 	public int getPreviousIndex(int index){
 		if (index==0) {
 			return (this.getEtat().size() - 1);

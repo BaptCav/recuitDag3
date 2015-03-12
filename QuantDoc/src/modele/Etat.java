@@ -7,7 +7,11 @@ import java.util.List;
 import mutation.IMutation;
 import mutation.TwoOptMove;
 import parametrage.EnergiePotentielle;
-
+/**
+ * Un etat a par défaut ses voisins definis a NULL, il doit etre modifié par l'utilisateur.
+ * L'utilisateur se devra d'instancier Etat en une classe correspondant à son probleme.
+ * 
+ */
 public class Etat {
 	
 	Etat previous;
@@ -16,11 +20,7 @@ public class Etat {
 	
 	
 	EnergiePotentielle epot;
-	/**
-	 * Un etat a par défaut une matrice d'ising et ses voisins definis a NULL, il doit etre modifié par l'utilisateur.
-	 * L'utilisateur se devra d'instancier Etat en une classe correspondant à son probleme.
-	 * 
-	 */
+	
 	public Etat(){
 		
 	}
@@ -28,6 +28,11 @@ public class Etat {
 		this.epot=epot;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * l'energie potentielle en tant que CLASS instanciée pour faciliter la représentation
+	 */
 	public EnergiePotentielle getE(){
 		return this.epot;
 	}
@@ -41,29 +46,59 @@ public class Etat {
 	public void setnext(Etat etat) {
 		this.next=etat;		
 	}
-	
+	/**
+	 * Clone l'etat
+	 */
 	public Etat clone(){
 	Etat e = new Etat(this.epot);
 	return e;
 	}
+	/**
+	 * @return
+	 * L'etat suivant dans la chaine liant les états
+	 */
+	
 	public Etat getNext(){
 		return this.next;
 	}
+	/**
+	 * @return
+	 * L'etat précédent dans la chaine liant les états
+	 */
 	public Etat getPrevious(){
 		return this.previous;
 	}
+	/**
+	 * 
+	 * @return
+	 * L'energie potentielle de l'etat
+	 */
 	public double getEnergie(){
 		return this.epot.calculer(this);
 	}
+	
+	/**
+	 * L'utilisateur devra implementer la methode appropriée a son "type" d'etat
+	 * retourne 0 par défaut
+	 */
 	public int distanceIsing(Etat e){
-		/**
-		 * L'utilisateur devra implementer la methode appropriée a son "type" d'etat
-		 * retourne 0 par défaut
-		 */
+
 		
 		return 0;
 	}
 	
+
+	/**
+	 * Fonction dont le but est de construire une liste des deltaepot engendrés par une mutation élémentaire
+	 * @param p
+	 * instance du probleme étudié
+	 * @param m
+	 * mutation qui va induire les deltaEpot
+	 * @param longueurListeVoisins
+	 * Longueur desirée de la liste
+	 * @return
+	 * La liste des deltaEpot
+	 */
 	public List<Double> buildListeVoisins(Probleme p,IMutation m,int longueurListeVoisins){
 
 		double deltaE = -1;

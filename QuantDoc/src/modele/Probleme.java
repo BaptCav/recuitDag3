@@ -6,7 +6,27 @@ import parametrage.EnergieCinetique;
 import parametrage.EnergiePotentielle;
 import parametrage.ParametreGamma;
 import parametrage.Temperature;
-
+/**
+ * 
+ * 
+ * 
+ * Cette classe est clef dans la conception du recuit
+ * C'est une particule a laquelle est liée la totalité du problème, energie cinétique et Etats spécifiés sur le problème.
+ * 
+ * Elle dépend aussi d'une seed qui va par la suite permettre de générer des nombres aléatoires 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author BaptCav
+ * 
+ * 
+ * 
+ * 
+ *
+ */
 public class Probleme extends Particule{
 
 	// On rajoute de plus une seed de génération de nombres aléatoires
@@ -20,6 +40,17 @@ public class Probleme extends Particule{
 	public Probleme(){
 		
 	}
+	/**
+	 * 
+	 * @param etat
+	 * 	Liste d'etats adaptés
+	 * @param T
+	 * 	Temperature de la particule
+	 * @param seed
+	 * @param energiecin
+	 * @param energiepot
+	 * @param gamma
+	 */
 	public Probleme(ArrayList<Etat> etat,Temperature T,int seed,EnergieCinetique energiecin,EnergiePotentielle energiepot,ParametreGamma gamma){
 		super(etat, T);
 		this.seed=seed;
@@ -39,13 +70,28 @@ public class Probleme extends Particule{
 		Probleme p = new Probleme(r,this.getT(),this.seed,this.energiecin,this.energiepot,this.gamma);
 		return p;
 	}
+	/**
+	 * 
+	 * @return
+	 * L'energie totale de la particule
+	 */
 	public double calculerEnergie(){
 		return this.calculerEnergieCinetique()+this.calculerEnergiePotentielle();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 *L'energie cinétique associée au problème
+	 */
 	public double calculerEnergieCinetique(){
 		return 	this.energiecin.calculer(this);
 	}
-
+	/**
+	 * 
+	 * @return
+	 *L'energie potentielle totale de la particule
+	 */
 	public double calculerEnergiePotentielle(){
 		double compteur=0;
 		for (Etat i:this.etat){
@@ -70,7 +116,11 @@ public class Probleme extends Particule{
 	public void setSeed(int seed){
 		this.seed=seed;
 	}
-
+/**
+ * 
+ * @return
+ * la meilleure instance Etatique
+ */
 	public Etat getBest() {
 		Etat best = this.etat.get(0);
 		double min = energiepot.calculer(best);
@@ -85,6 +135,13 @@ public class Probleme extends Particule{
 
 	}
 
+	/**
+	 * Best avoid ----- A recoder
+	 * @param e
+	 * @param m
+	 * @return
+	 * la difference locale de spin engendré par la mutation
+	 */
 	public int differenceSpins(Etat e,IMutation m){
 		
 			Etat now = e;
@@ -124,13 +181,15 @@ public class Probleme extends Particule{
 		this.energiepot=epot;
 	}
 	
+	
+	/**
+	 * Par defaut cree un Etat a NULL
+	 * L'utilisateur DOIT IMPLEMENTER cett methode pour creer un Etat adapte a son probleme
+	 */
+	
+
 	public Etat creeEtatAleatoire(){
-		/**
-		 * Par defaut cree un Etat a NULL
-		 * L'utilisateur DOIT IMPLEMENTER cett methode pour creer un Etat adapte a son probleme
-		 */
-		
-		return new Etat();
+			return new Etat();
 	}
 	
 }
