@@ -11,9 +11,7 @@ public class Particule {
 	ArrayList<Etat> etat;
 	Temperature T;
 	
-	/**
-	 * Le Constructeur s'occupe du bouclage de la chaine d'etat lui meme
-	 */
+
 	
 	public Particule(ArrayList<Etat> etat,Temperature T){
 	
@@ -81,6 +79,7 @@ public class Particule {
 	/**
 	 * Set la liste d'etats en effectuant le bouclage au passage
 	 * @param e
+	 * la liste d'etat
 	 */
 	public void setEtat( ArrayList<Etat> e){
 		this.etat= e;
@@ -96,6 +95,7 @@ public class Particule {
 	/**
 	 * 
 	 * @param index
+	 * l'int de position
 	 * @return
 	 * i+1 dans la boucle cad (i+1)%Nombreetat
 	 */
@@ -109,6 +109,7 @@ public class Particule {
 	/**
 	 * 
 	 * @param index
+	 * l'int de position
 	 * @return
 	 * i-1 dans la boucle cad (i-1)%Nombreetat
 	 */

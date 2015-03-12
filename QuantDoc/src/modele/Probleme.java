@@ -40,18 +40,7 @@ public class Probleme extends Particule{
 	public Probleme(){
 		
 	}
-	/**
-	 * 
-	 * @param etat
-	 * 	Liste d'etats adaptés
-	 * @param T
-	 * 	Temperature de la particule
-	 * @param seed
-	 * @param energiecin
-	 * @param energiepot
-	 * @param gamma
-	 */
-	public Probleme(ArrayList<Etat> etat,Temperature T,int seed,EnergieCinetique energiecin,EnergiePotentielle energiepot,ParametreGamma gamma){
+		public Probleme(ArrayList<Etat> etat,Temperature T,int seed,EnergieCinetique energiecin,EnergiePotentielle energiepot,ParametreGamma gamma){
 		super(etat, T);
 		this.seed=seed;
 		this.energiecin=energiecin;
@@ -138,7 +127,9 @@ public class Probleme extends Particule{
 	/**
 	 * Best avoid ----- A recoder
 	 * @param e
+	 * etat a calculer
 	 * @param m
+	 * mutation pour calculer
 	 * @return
 	 * la difference locale de spin engendré par la mutation
 	 */
@@ -185,6 +176,7 @@ public class Probleme extends Particule{
 	/**
 	 * Par defaut cree un Etat a NULL
 	 * L'utilisateur DOIT IMPLEMENTER cett methode pour creer un Etat adapte a son probleme
+	 *@return un etat créé aléatoirement
 	 */
 	
 

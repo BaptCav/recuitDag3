@@ -80,6 +80,10 @@ public class Etat {
 	/**
 	 * L'utilisateur devra implementer la methode appropriée a son "type" d'etat
 	 * retourne 0 par défaut
+	 * @param e
+	 * Etat a calculer
+	 * @return
+	 * l'entier de la somme de spin
 	 */
 	public int distanceIsing(Etat e){
 
