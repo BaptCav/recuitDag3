@@ -16,6 +16,11 @@ import javax.swing.*;
 
 // Cette classe definit le probleme du recuit. Il se charge d'effectuer les mutations elementaires, de calculer l'energie et de diminuer T...
 
+/**
+ * 
+ * @author Pierre
+ *
+ */
 public class Recuit extends JFrame
 {
 	public double solutionNumerique;
@@ -26,6 +31,19 @@ public class Recuit extends JFrame
 
 
 
+	/**
+	 * Methode qui calcule la probabilité d'acceptation d'un état muté. 
+	 * Elle est utilisée dans la methode solution qui effectue le recuit.
+	 * @param deltaE
+	 * Variation de H
+	 * @param deltaEpot
+	 * Variation de H potentiel
+	 * @param temperature
+	 * Température du recuit
+	 * @return
+	 * Probabilité (entre 0 et 1) d'effectuer la mutation
+	 * @throws IOException
+	 */
 	public static double probaAcceptation(double deltaE, double deltaEpot, Temperature temperature) throws IOException 
 	{	if(deltaE<=0 /*|| deltaEpot<0*/){
 		return 1;
@@ -35,6 +53,26 @@ public class Recuit extends JFrame
 	}	
 	
 	
+	/**
+	 * C'est la méthode qui effectue le recuit quantique. 
+	 * @param p
+	 * Problème construit par l'utilisateur
+	 * @param m
+	 * Une mutation aléatoire correspondant au problème traité.
+	 * Les générations de mutation aléatoires au fil du recuit s'effectueront avec la méthode maj que l'utilisateur aura implémenté dans sa classe (voir IMutation)
+	 * @param nombreIterations
+	 * Nombre d'iterations pour chaque réplique. Le nombre de répliques, on le rappelle, est défini dans Problème.
+	 * @param seed
+	 * Rentrer 1 en argument
+	 * @param M
+	 * Nombre de fois consécutives que l'on traite une réplique. Rentrer 1 pour une utilisation normale
+	 * @param sortie
+	 * Fichier .txt dans lequel on stocke le résultat final du recuit.
+	 * @return
+	 * Solution du recuit : la meilleure énergie rencontrée par la particule
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public  double solution(Probleme p,IMutation m,int nombreIterations, int seed, int M,PrintWriter sortie) throws IOException, InterruptedException
 	{	
 		int compteurpourlasortie=0;
@@ -55,8 +93,8 @@ public class Recuit extends JFrame
 		double compteurSpinique = p.calculerEnergieCinetique();
 		double E = Epot-J.calcul(p.getT(), nombreEtat)*compteurSpinique;
 		double deltapot  = 0;
-		double distance = (e.get(0)).getEnergie();
-		double distanceBest = distance;
+		double energie = (e.get(0)).getEnergie();
+		double energieBest = energie;
 		
 		for(int i =0; i<nombreIterations;i++){
 			
@@ -75,7 +113,7 @@ public class Recuit extends JFrame
 				for(int k=0; k<M; k++){
 					
 					m.maj();
-					distance = r2.getEnergie();
+					energie = r2.getEnergie();
 					
 					deltapot =  m.calculer(p2,r2);
 					
@@ -92,12 +130,12 @@ public class Recuit extends JFrame
 						
 						Epot += deltapot/nombreEtat;
 						E += delta;// L'energie courante est modifiée
-						distance += deltapot;
+						energie += deltapot;
 						
 					}
-					if (distance < distanceBest){
+					if (energie < energieBest){
 						pBest.setEtat(e);
-						distanceBest = distance;
+						energieBest = energie;
 					}
 					/*if(compteurpourlasortie%1000==0){
 					Writer.ecriture(compteurpourlasortie,distanceBest, sortie);
@@ -114,9 +152,9 @@ public class Recuit extends JFrame
 			Collections.shuffle(p.getEtat());
 			
 		}
-		Writer.ecriture(compteurpourlasortie,distanceBest, sortie);
+		Writer.ecriture(compteurpourlasortie,energieBest, sortie);
 		
-		return distanceBest;
+		return energieBest;
 
 	}
 	
