@@ -39,7 +39,7 @@ public class Recuit extends JFrame
 
 
 
-	public static double solution(Graphe g, int nombreIterations,PrintWriter sortie) throws IOException, InterruptedException
+	public static Routage solution(Graphe g, int nombreIterations,PrintWriter sortie) throws IOException, InterruptedException
 	{
 	
 		int compteur =0;
@@ -88,7 +88,7 @@ public class Recuit extends JFrame
 		Writer.ecriture(0,meilleureRoute.energie().getEnergie(), sortie);
 		solutionNumerique = meilleureRoute.energie().getEnergie();
 		System.out.println(meilleureRoute.energie().getEnergie());
-		return meilleureRoute.energie().getEnergie();
+		return ((Routage)meilleureRoute);
 
 	}   
 
