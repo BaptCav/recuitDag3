@@ -70,16 +70,7 @@ public class RecuitAccelere extends JFrame
 		
 		ArrayList<Etat> e = p.getEtat();
 		Etat etat = e.get(0);
-		Etat previous = e.get(nombreRepliques-1);
-		Etat next = e.get(1);
 		double meilleureEnergie = (e.get(0)).getEnergie();
-		
-		for (int i = 0; i < nombreRepliques; i++){ // initialisation de meilleureEnergie
-			double energie = e.get(i).getEnergie();
-			if (energie < meilleureEnergie){
-				meilleureEnergie = energie ;
-			}
-		}
 		
 		double proba = 1;
 		
@@ -87,8 +78,6 @@ public class RecuitAccelere extends JFrame
 			
 			Probleme p2 = p.clone();
 			ArrayList<Etat> e2 = p2.getEtat();
-			 
-			Collections.shuffle(p.getEtat());
 			Ponderation J = new Ponderation(p.getGamma());
 			Jr = J.calcul(p.getT(), nombreRepliques);
 			
@@ -107,23 +96,26 @@ public class RecuitAccelere extends JFrame
 						EpActuelle = etat.getEnergie(); // energie potentielle temporelle
 						if( EpActuelle < meilleureEnergie ){ // mettre a jour la meilleur energie
 							meilleureEnergie = EpActuelle;	
+							pBest.setEtat(e);
 						}
 					}
 					else{
 						if (deltaE < 0) proba = 1;
 						else proba = expf(-deltaE/(K.getK()*p.getT().getValue()));
 						if (proba >= Math.random()) {
-							deltaEc = p.calculerEnergieCinetique();
-							deltaE = deltaEp/nombreRepliques - deltaEc*Jr;
-							
+							deltaE = deltaEp/nombreRepliques - J.calcul(p.getT(),nombreRepliques)*p.differenceSpins(r2,m);
+							e.set(j, r2);
+							p.setEtat(e);
 							if( deltaE <= 0){
 								m.faire(p2,r2); // faire la mutation
-								EpActuelle = etat.getEnergie(); // energie potentielle temporelle
+								EpActuelle = r2.getEnergie(); // energie potentielle temporelle
 							}
 							else{
 								proba = expf(-deltaE/(K.getK()*p.getT().getValue()));
 								if (proba >= Math.random()) {
-									m.faire(p.clone(),e.get(j)); // accepter la mutation
+									m.faire(p2,r2); // accepter la mutation
+									e.set(j, r2);
+									p.setEtat(e);
 								}
 							}
 						}
@@ -132,6 +124,7 @@ public class RecuitAccelere extends JFrame
 			}
 			p.majgamma();
 			J.setGamma(p.getGamma());
+			Collections.shuffle(p.getEtat());
 		}
 		
 		Writer.ecriture(compteurpourlasortie,meilleureEnergie, sortie);
