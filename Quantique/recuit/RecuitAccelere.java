@@ -53,97 +53,90 @@ public class RecuitAccelere extends JFrame
 	{	
 		int compteurpourlasortie=0;
 
-		int nombreEtat=p.nombreEtat();
+		int nombreRepliques=p.nombreEtat();
 		List<Double> listeDelta = ParametreurT.parametreurRecuit(p,m, nombreIterations);
-		Temperature temperatureDepart = new Temperature(listeDelta.get(50)/nombreEtat);
-		ParametreGamma gamma = ParametreurGamma.parametrageGamma(nombreIterations,nombreEtat,temperatureDepart,listeDelta.get(200));// Rappel : 1000 echantillons
+		Temperature temperatureDepart = new Temperature(listeDelta.get(50)/nombreRepliques);
+		ParametreGamma gamma = ParametreurGamma.parametrageGamma(nombreIterations,nombreRepliques,temperatureDepart,listeDelta.get(200));// Rappel : 1000 echantillons
 		p.setT(temperatureDepart.getValue());
 		p.setGamma(gamma);
 		Probleme pBest = p.clone();
-
-
-		p.setT(temperatureDepart);
-		ArrayList<Etat> e = p.getEtat();
-		Ponderation J = new Ponderation(p.getGamma());
-		double Epot = p.calculerEnergiePotentielle();
-		double compteurSpinique = p.calculerEnergieCinetique();
-		double E = Epot-J.calcul(p.getT(), nombreEtat)*compteurSpinique;
-		double deltapot  = 0;
-		double energie = (e.get(0)).getEnergie();
-		double energieBest = energie;
+		
+		double Jr = 0;
+		double deltaEp = 0;
+		double deltaEcUB = 0;
+		double deltaE = 0;
 		double EpActuelle = 0;
-		double proba = 0;
-
-		for(int i =0; i<nombreIterations;i++){
-
-			E = Epot-J.calcul(p.getT(), nombreEtat)*compteurSpinique;
-
-
+		double deltaEc = 0;
+		
+		ArrayList<Etat> e = p.getEtat();
+		Etat etat = e.get(0);
+		Etat previous = e.get(nombreRepliques-1);
+		Etat next = e.get(1);
+		double meilleureEnergie = (e.get(0)).getEnergie();
+		
+		for (int i = 0; i < nombreRepliques; i++){ // initialisation de meilleureEnergie
+			double energie = e.get(i).getEnergie();
+			if (energie < meilleureEnergie){
+				meilleureEnergie = energie ;
+			}
+		}
+		
+		double proba = 1;
+		
+		for(int i =0; i<nombreIterations;i++){ // equivalent du while(Gamma.modifierT()....
+			
 			Probleme p2 = p.clone();
-
 			ArrayList<Etat> e2 = p2.getEtat();
-
-			for(int j=0;j<nombreEtat;j++){// on effectue M  fois la mutation sur chaque particule avant de descendre gamma
-
-				Etat r1 = e.get(j);
+			 
+			Collections.shuffle(p.getEtat());
+			Ponderation J = new Ponderation(p.getGamma());
+			Jr = J.calcul(p.getT(), nombreRepliques);
+			
+			for(int j=0;j<nombreRepliques;j++){
+				
 				Etat r2 = e2.get(j);
-
+				
 				for(int k=0; k<M; k++){
-
 					m.maj();
-					energie = r2.getEnergie();
-
-					deltapot =  m.calculer(p2,r2);
-
-					double delta = deltapot/nombreEtat;
-
-					if(deltapot <= 0){
-						m.faire(p2,r2);
-						EpActuelle = r2.getEnergie();
-
-						if(EpActuelle < energieBest)
-						{
-							energieBest = EpActuelle;
+					deltaEp = p.calculerEnergiePotentielle(); // calculer deltaEp si la mutation etait acceptee
+					deltaEcUB = 16; // calculer deltaIEc si la mutation etait acceptee
+					deltaE = deltaEp/nombreRepliques - deltaEcUB*Jr;
+					
+					if(deltaEp <= 0){
+						m.faire(p2,r2); // faire la mutation
+						EpActuelle = etat.getEnergie(); // energie potentielle temporelle
+						if( EpActuelle < meilleureEnergie ){ // mettre a jour la meilleur energie
+							meilleureEnergie = EpActuelle;	
 						}
 					}
-					else {
-						if(delta < 0){
-							proba = 1;
-						}
-						else{
-							proba = expf(-delta/(K.getK()*p.getT().getValue()));
-						}
-						
-						if(proba >= Math.random())
-						{
-							double deltaEc = p.differenceSpins(r2,m);
-							delta = deltapot/nombreEtat - J.calcul(p.getT(),nombreEtat)*deltaEc;
+					else{
+						if (deltaE < 0) proba = 1;
+						else proba = expf(-deltaE/(K.getK()*p.getT().getValue()));
+						if (proba >= Math.random()) {
+							deltaEc = p.calculerEnergieCinetique();
+							deltaE = deltaEp/nombreRepliques - deltaEc*Jr;
 							
-							if(delta <= 0){
-								m.faire(p2,r2);
-								EpActuelle = r2.getEnergie();
+							if( deltaE <= 0){
+								m.faire(p2,r2); // faire la mutation
+								EpActuelle = etat.getEnergie(); // energie potentielle temporelle
 							}
 							else{
-								proba = expf(-delta/(K.getK()*p.getT().getValue()));
-								if(proba >= Math.random()){
-									m.faire(p2,r2);
+								proba = expf(-deltaE/(K.getK()*p.getT().getValue()));
+								if (proba >= Math.random()) {
+									m.faire(p.clone(),e.get(j)); // accepter la mutation
 								}
 							}
 						}
 					}
 				}
-
-
 			}
-			//UNE FOIS EFFECTUEE SUR tout les etat de la particule on descend gamma
 			p.majgamma();
 			J.setGamma(p.getGamma());
-			Collections.shuffle(p.getEtat());
-
 		}
-		Writer.ecriture(compteurpourlasortie,energieBest, sortie);
+		
+		Writer.ecriture(compteurpourlasortie,meilleureEnergie, sortie);
 
-		return energieBest;
+		return meilleureEnergie;
 
 	}
 
