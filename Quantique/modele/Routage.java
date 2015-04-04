@@ -15,10 +15,12 @@ public class Routage extends Etat {
 
 
 
-	EnergiePotentielleTsp epot= new EnergiePotentielleTsp(0);
+	EnergiePotentielleTsp epot= new EnergiePotentielleTsp();
 
 	ArrayList<Integer> route ;
+	private int taille;
 	Graphe g;
+	int[][] ising;
 	public ArrayList<Integer> getRoute(){
 		return this.route;
 	}
@@ -29,29 +31,16 @@ public class Routage extends Etat {
 		this.g = g;
 		this.route=routeInitiale();
 		this.updateIsing();
+		this.taille=route.size();
+	}
+	public void setIsing(int[][] ising){
+		this.ising =ising ;
 	}
 
-
-	//Actualise la listeVoisins et la renvoie
-	public List<Double> buildListeVoisins(int longueurListeVoisins){
-		int n = this.g.getdists().length;
-		IMutation mutation = new TwoOptMove(n);
-		Probleme p = new Probleme();
-		double deltaE = -1;
-		List<Double> l = new LinkedList<Double>();
-		for (int i =0; i < longueurListeVoisins; i++){
-			deltaE = -1;
-			while(deltaE<=0){
-
-				mutation = new TwoOptMove(n);
-				deltaE=mutation.calculer(p,this);
-
-			}
-			l.add(deltaE);
-		}
-		Collections.sort(l);
-		return l;
+	public int[][] getIsing(){
+		return this.ising;
 	}
+
 
 	public Routage (Graphe g, ArrayList<Integer> liste){
 		this.g=g;
@@ -64,7 +53,7 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++) {
 			liste.add(new Integer(index));
 		}
-		// RÃ©organise alÃ©atoirement l'ordre de visite
+		// Réorganise aléatoirement l'ordre de visite
 		Collections.shuffle(liste);
 		return liste;
 	}
@@ -76,6 +65,8 @@ public class Routage extends Etat {
 		for (int index = 0; index < n; index++){
 			l.set(index, this.route.get(index));
 		}
+
+		// On clone la matrice d'Ising
 		int[][] m = new int[n][n];
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < n; j++){
@@ -116,7 +107,7 @@ public class Routage extends Etat {
 		return s;
 	}
 
-	public double getDistance(){
+	public double getEnergie(){
 		double cpt=0.0;
 		int j=0;
 		int L = this.tailleRoute();
@@ -137,7 +128,7 @@ public class Routage extends Etat {
 		return 0;
 	}
 
-	//Cette fonction met Ã  jour la matrice d'Ising en connectant les noeuds i et j. Condition : i != j
+	//Cette fonction met à jour la matrice d'Ising en connectant les noeuds i et j. Condition : i != j
 	public void connect(int i, int j){
 		if (i<j) this.ising[i][j] = 1;
 		if (j<i) this.ising[j][i] = 1;
@@ -149,7 +140,7 @@ public class Routage extends Etat {
 		if (j<i) this.ising[j][i] = -1;
 	}
 
-	//Mise Ã  jour de la matrice d'Ising et renvoi de cette matrice
+	//Mise à jour de la matrice d'Ising et renvoi de cette matrice
 	public int[][] updateIsing(){
 		int n = this.tailleRoute();
 		ArrayList<Integer> r= this.getRoute();
@@ -157,7 +148,7 @@ public class Routage extends Etat {
 		int next;
 		int[][] m = new int[n][n];
 
-		//On passe Ã  1 les noeuds lies entre eux
+		//On passe à 1 les noeuds lies entre eux
 		for(int i =0; i<n;i++){
 			now= r.get(i);
 			next = r.get(getNextIndex(i));
@@ -191,7 +182,7 @@ public class Routage extends Etat {
 		return compteurspinique;
 	}
 
-	//Affiche le pourcentage de similarite entre 2 routes. Si on renvoie 100, elles sont complÃ¨tement similaires. Si on renvoie 0, elles sont complÃ¨tement differentes.
+	//Affiche le pourcentage de similarite entre 2 routes. Si on renvoie 100, elles sont complètement similaires. Si on renvoie 0, elles sont complètement differentes.
 	public int pourcentageSimilarite(Routage autre){
 		int n = this.tailleRoute();
 		int rapprochement = this.distanceIsing(autre);
@@ -202,7 +193,7 @@ public class Routage extends Etat {
 		return ((difference*100)/differenceTotale);
 	}
 
-	//Affiche la matrice d'Ising de la route. Utile pour vÃ©rifications
+	//Affiche la matrice d'Ising de la route. Utile pour vérifications
 	public void afficheIsing(){
 		int[][] M = this.getIsing();
 		for(int k =0;k<M.length;k++){
@@ -211,6 +202,10 @@ public class Routage extends Etat {
 			}
 			System.out.println("");
 		}
+	}
+
+	public int getTaille(){
+		return this.taille;
 	}
 
 
