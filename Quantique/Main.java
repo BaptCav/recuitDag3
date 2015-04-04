@@ -38,7 +38,7 @@ class Main{
 					double result = 0;
 					int n = g.getdists().length;
 					int nombreEtat=10;
-					PrintWriter sortie = new PrintWriter("a280DAG3_aveccondition.txt");
+					PrintWriter sortie = new PrintWriter("a280DAG3_sanscondition.txt");
 					double startTime = System.currentTimeMillis();
 					for(int j=0; j<100; j++)
 					{
@@ -63,8 +63,7 @@ class Main{
 						
 						result = c.solution(p,m,10*n*n,1,1);
 						System.out.println(result);
-						//Writer.ecriture(j,result,sortie);
-						sortie.close();
+						Writer.ecriture(j,result,sortie);
 						
 				
 					} 
